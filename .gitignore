@@ -141,3 +141,4 @@ cython_debug/
 # ai4db
 Overall/train-test-data/
 .idea
+*/logs
