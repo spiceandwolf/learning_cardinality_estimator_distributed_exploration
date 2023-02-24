@@ -138,3 +138,6 @@ dmypy.json
 # Cython debug symbols
 cython_debug/
 
+# ai4db
+Overall/train-test-data/
+.idea
