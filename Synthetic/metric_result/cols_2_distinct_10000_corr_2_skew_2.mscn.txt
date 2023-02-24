@@ -1,0 +1,221 @@
+Training Time: 74.98134756088257s
+Prediction time per test sample: 0.007890939712524414ms
+Median: 1.2075983506283228
+90th percentile: 2.2868011714936545
+95th percentile: 3.0
+99th percentile: 5.518167004732927
+99th percentile: 5.518167004732927
+Max: 19.404761904761905
+Mean: 1.5350313152078907
+MSE: 3969683.372
+MAPE: 32.259292417066625
+Pearson Correlation: PearsonRResult(statistic=0.9977748602461446, pvalue=0.0)
+
+Training Time: 73.60429310798645s
+Prediction time per test sample: 0.009870529174804688ms
+Median: 1.3264144210383955
+90th percentile: 2.5
+95th percentile: 3.549932715021491
+99th percentile: 6.848195426195422
+99th percentile: 6.848195426195422
+Max: 14.298245614035087
+Mean: 1.6459064229172977
+MSE: 4928709.678
+MAPE: 34.013225397979085
+Pearson Correlation: PearsonRResult(statistic=0.9957005998792345, pvalue=0.0)
+
+Training Time: 74.93316984176636s
+Prediction time per test sample: 0.007353544235229492ms
+Median: 1.349653817349812
+90th percentile: 2.0886829368757085
+95th percentile: 3.0
+99th percentile: 6.292734969456648
+99th percentile: 6.292734969456648
+Max: 23.970588235294116
+Mean: 1.626650397040246
+MSE: 7820656.046
+MAPE: 35.01491775175996
+Pearson Correlation: PearsonRResult(statistic=0.9937439490851535, pvalue=0.0)
+
+Training Time: 74.3975157737732s
+Prediction time per test sample: 0.011701583862304688ms
+Median: 1.2118349583462287
+90th percentile: 2.0
+95th percentile: 3.0
+99th percentile: 5.407943578322197
+99th percentile: 5.407943578322197
+Max: 20.96875
+Mean: 1.5165958198780833
+MSE: 3853781.182
+MAPE: 32.571053678275376
+Pearson Correlation: PearsonRResult(statistic=0.9970195586892747, pvalue=0.0)
+
+Training Time: 73.50714159011841s
+Prediction time per test sample: 0.00986933708190918ms
+Median: 1.1977000739094605
+90th percentile: 2.2395103156848126
+95th percentile: 3.0
+99th percentile: 5.000344827586207
+99th percentile: 5.000344827586207
+Max: 51.61538461538461
+Mean: 1.5706559827404685
+MSE: 6906334.409
+MAPE: 31.97008086243952
+Pearson Correlation: PearsonRResult(statistic=0.9962636047708655, pvalue=0.0)
+
+Training Time: 73.92352867126465s
+Prediction time per test sample: 0.007855415344238281ms
+Median: 1.2510195347900512
+90th percentile: 2.9596736753574433
+95th percentile: 5.024058393070486
+99th percentile: 14.090481137233438
+99th percentile: 14.090481137233438
+Max: 33.68571428571428
+Mean: 2.0138104286751557
+MSE: 4964571.256
+MAPE: 34.59524368521496
+Pearson Correlation: PearsonRResult(statistic=0.9961376363376541, pvalue=0.0)
+
+Training Time: 74.56244993209839s
+Prediction time per test sample: 0.008974313735961914ms
+Median: 1.25
+90th percentile: 2.3333333333333335
+95th percentile: 3.002830188679243
+99th percentile: 5.394635416666666
+99th percentile: 5.394635416666666
+Max: 8.927536231884059
+Mean: 1.5588238275857034
+MSE: 7002365.144
+MAPE: 34.690767464103736
+Pearson Correlation: PearsonRResult(statistic=0.9955494934156637, pvalue=0.0)
+
+Training Time: 74.61612677574158s
+Prediction time per test sample: 0.008062124252319336ms
+Median: 1.2070829038662887
+90th percentile: 2.0
+95th percentile: 2.807494152949995
+99th percentile: 5.000210526315789
+99th percentile: 5.000210526315789
+Max: 14.0
+Mean: 1.4742105916300765
+MSE: 4343069.637
+MAPE: 32.29417148247162
+Pearson Correlation: PearsonRResult(statistic=0.9957295117782727, pvalue=0.0)
+
+Training Time: 73.80551028251648s
+Prediction time per test sample: 0.007740259170532227ms
+Median: 1.3502808726179616
+90th percentile: 2.588
+95th percentile: 4.0
+99th percentile: 17.804374999999997
+99th percentile: 17.804374999999997
+Max: 43.583333333333336
+Mean: 1.9908585819395859
+MSE: 6014751.475
+MAPE: 36.12287096553853
+Pearson Correlation: PearsonRResult(statistic=0.9948555893950277, pvalue=0.0)
+
+Training Time: 73.8862829208374s
+Prediction time per test sample: 0.007791280746459962ms
+Median: 1.2552669780192864
+90th percentile: 2.0
+95th percentile: 2.7502483443708607
+99th percentile: 5.283991228070165
+99th percentile: 5.283991228070165
+Max: 16.34375
+Mean: 1.5391020346007722
+MSE: 4489519.449
+MAPE: 31.473311518010227
+Pearson Correlation: PearsonRResult(statistic=0.9957638077746699, pvalue=0.0)
+
+Training Time: 74.60837864875793s
+Prediction time per test sample: 0.007943868637084961ms
+Median: 1.2
+90th percentile: 2.6676332288401254
+95th percentile: 4.44615495720892
+99th percentile: 13.819761904761895
+99th percentile: 13.819761904761895
+Max: 47.92857142857143
+Mean: 1.8389755475121508
+MSE: 2206463.247
+MAPE: 31.98583281019804
+Pearson Correlation: PearsonRResult(statistic=0.9978751413096335, pvalue=0.0)
+
+Training Time: 74.95301294326782s
+Prediction time per test sample: 0.008110761642456055ms
+Median: 1.2549582051934713
+90th percentile: 2.2474156933538496
+95th percentile: 3.1100044075810342
+99th percentile: 8.00090909090909
+99th percentile: 8.00090909090909
+Max: 13.583333333333334
+Mean: 1.606595367080576
+MSE: 3932666.804
+MAPE: 32.52405781776189
+Pearson Correlation: PearsonRResult(statistic=0.9963770157974214, pvalue=0.0)
+
+Training Time: 73.91932511329651s
+Prediction time per test sample: 0.009938240051269531ms
+Median: 1.234405264009475
+90th percentile: 2.0042810851773494
+95th percentile: 3.0
+99th percentile: 13.419747733543542
+99th percentile: 13.419747733543542
+Max: 24.904761904761905
+Mean: 1.6982359835190661
+MSE: 2944944.736
+MAPE: 31.176964496853294
+Pearson Correlation: PearsonRResult(statistic=0.9972170678508363, pvalue=0.0)
+
+Training Time: 75.23289203643799s
+Prediction time per test sample: 0.010828256607055664ms
+Median: 1.2881562881562882
+90th percentile: 2.5
+95th percentile: 3.5252022576167645
+99th percentile: 11.050573099415198
+99th percentile: 11.050573099415198
+Max: 44.733333333333334
+Mean: 1.8033982637598682
+MSE: 5085249.256
+MAPE: 34.890504102428395
+Pearson Correlation: PearsonRResult(statistic=0.9975250600706467, pvalue=0.0)
+
+Training Time: 74.7345974445343s
+Prediction time per test sample: 0.008413553237915039ms
+Median: 1.3333333333333333
+90th percentile: 2.25
+95th percentile: 3.0
+99th percentile: 9.51062251655629
+99th percentile: 9.51062251655629
+Max: 26.5
+Mean: 1.665635383647918
+MSE: 5273536.967
+MAPE: 34.287510356637384
+Pearson Correlation: PearsonRResult(statistic=0.9953750594457152, pvalue=0.0)
+
+Training Time: 73.84967255592346s
+Prediction time per test sample: 0.008212566375732422ms
+Median: 1.2558539131932702
+90th percentile: 2.5
+95th percentile: 3.1235453468758942
+99th percentile: 6.462892367906064
+99th percentile: 6.462892367906064
+Max: 12.909090909090908
+Mean: 1.6119333232771669
+MSE: 3576405.382
+MAPE: 33.012711347425004
+Pearson Correlation: PearsonRResult(statistic=0.997453727253443, pvalue=0.0)
+
+Training Time: 130.77183651924133s
+Prediction time per test sample: 0.009436607360839844ms
+Median: 1.2561696173888566
+90th percentile: 2.5
+95th percentile: 3.8394352773100597
+99th percentile: 15.353886639676114
+99th percentile: 15.353886639676114
+Max: 65.375
+Mean: 1.9394147709889726
+MSE: 6167296.291
+MAPE: 34.435810764959704
+Pearson Correlation: (0.9951995543789416, 0.0)
+
