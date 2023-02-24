@@ -1,0 +1,59 @@
+{
+	"files": [
+		{
+			"path": "Synthetic/deepdb/deepdb_job_ranges/ensemble_compilation/spn_ensemble.py",
+			"bookmarks": [
+				{
+					"line": 570,
+					"column": 18,
+					"label": ""
+				}
+			]
+		},
+		{
+			"path": "Synthetic/deepdb/deepdb_job_ranges/evaluation/utils.py",
+			"bookmarks": [
+				{
+					"line": 261,
+					"column": 24,
+					"label": ""
+				}
+			]
+		},
+		{
+			"path": "Synthetic/naru/eval_model.py",
+			"bookmarks": [
+				{
+					"line": 159,
+					"column": 15,
+					"label": ""
+				},
+				{
+					"line": 387,
+					"column": 15,
+					"label": ""
+				},
+				{
+					"line": 850,
+					"column": 34,
+					"label": ""
+				}
+			]
+		},
+		{
+			"path": "Synthetic/naru/estimators.py",
+			"bookmarks": [
+				{
+					"line": 114,
+					"column": 26,
+					"label": ""
+				},
+				{
+					"line": 365,
+					"column": 46,
+					"label": ""
+				}
+			]
+		}
+	]
+}
