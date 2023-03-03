@@ -54,6 +54,16 @@
 					"label": ""
 				}
 			]
+		},
+		{
+			"path": "Synthetic/deepdb/deepdb_job_ranges/data_preparation/prepare_single_tables.py",
+			"bookmarks": [
+				{
+					"line": 39,
+					"column": 24,
+					"label": ""
+				}
+			]
 		}
 	]
 }

@@ -142,3 +142,5 @@ cython_debug/
 Overall/train-test-data/
 .idea
 */logs
+Synthetic/csvdata_sql
+Synthetic_distributed/nodes
