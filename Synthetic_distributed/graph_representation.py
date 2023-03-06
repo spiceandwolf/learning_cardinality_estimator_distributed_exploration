@@ -148,6 +148,14 @@ class Query:
                                                       if not conflicting(condition)]
         self.conditions = [(cond_table, condition) for cond_table, condition in self.conditions
                            if not (cond_table == table and conflicting(condition))]
+        
+    def remove_attributes_for_masking(self, attributes):
+        def searching(condition):
+            return any([condition.startswith(attribute + ' ') or condition.startswith(attribute + '<') or
+                        condition.startswith(attribute + '>') or condition.startswith(attribute + '=') for
+                        attribute in attributes])
+        
+        self.conditions = [(cond_table, condition) for cond_table, condition in self.conditions if not (searching(attributes))]
 
     def copy_cardinality_query(self):
         query = Query(self.schema_graph)

@@ -7,12 +7,22 @@
 					"line": 570,
 					"column": 18,
 					"label": ""
+				},
+				{
+					"line": 1005,
+					"column": 20,
+					"label": ""
 				}
 			]
 		},
 		{
 			"path": "Synthetic/deepdb/deepdb_job_ranges/evaluation/utils.py",
 			"bookmarks": [
+				{
+					"line": 140,
+					"column": 7,
+					"label": ""
+				},
 				{
 					"line": 261,
 					"column": 24,

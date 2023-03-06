@@ -1,7 +1,7 @@
 import logging
 import sqlparse
-from Synthetic_distributed.graph_representation import QueryType
 from sqlparse.tokens import Token
+from Synthetic_distributed.graph_representation import Query, QueryType
 
 logger = logging.getLogger(__name__)
 
@@ -50,7 +50,7 @@ def parse_query(query_str, schema):
     :param schema:
     :return:
     """
-    query = QueryType(schema)
+    query = Query(schema)
 
     # split query into part before from
     parsed_tokens = sqlparse.parse(query_str)[0]
