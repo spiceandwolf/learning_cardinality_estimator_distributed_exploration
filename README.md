@@ -86,11 +86,11 @@ $\color{Azure} {基于学习的ai分布式基数估计器实现目标：满足�
    在现在这种数据集上的效果最好，需要更复杂的模拟环境做进一步研究。  
 
    1.2.1 cols_2_distinct_10000_corr_2_skew_2  
-   ![cols_2_distinct_10000_corr_2_skew_2](https://github.com/spiceandwolf/learning_cardinality_estimator_distributed_exploration/blob/main/Synthetic/cols_2_distinct_10000_corr_2_skew_2.deepdb.png)
+   ![cols_2_distinct_10000_corr_2_skew_2](https://github.com/spiceandwolf/learning_cardinality_estimator_distributed_exploration/blob/main/Synthetic/cols_2_distinct_10000_corr_2_skew_2.deepdb.png)  
 ￼
-   1.2.2 cols_2_distinct_10000_corr_8_skew_2
-￼  ![cols_2_distinct_10000_corr_8_skew_2](https://github.com/spiceandwolf/learning_cardinality_estimator_distributed_exploration/blob/main/Synthetic/  cols_2_distinct_10000_corr_8_skew_2.deepdb.png)  
-
+   1.2.2 cols_2_distinct_10000_corr_8_skew_2  
+   ![cols_2_distinct_10000_corr_8_skew_2](https://github.com/spiceandwolf/learning_cardinality_estimator_distributed_exploration/blob/main/Synthetic/cols_2_distinct_10000_corr_8_skew_2.deepdb.png)
+￼  
  1.3 Naru/NerouCard  
 
   代表类型 : data-driven中的自回归模型。  
@@ -108,13 +108,13 @@ $\color{Azure} {基于学习的ai分布式基数估计器实现目标：满足�
    1.3.1 cols_2_distinct_10000_corr_2_skew_2  
    ![cols_2_distinct_10000_corr_2_skew_2](https://github.com/spiceandwolf/learning_cardinality_estimator_distributed_exploration/blob/main/Synthetic/cols_2_distinct_10000_corr_2_skew_2.naru.png)
 ￼
-   1.3.2 cols_2_distinct_10000_corr_8_skew_2
-￼  ![cols_2_distinct_10000_corr_8_skew_2](https://github.com/spiceandwolf/learning_cardinality_estimator_distributed_exploration/blob/main/Synthetic/cols_2_distinct_10000_corr_8_skew_2.naru.png)  
+   1.3.2 cols_2_distinct_10000_corr_8_skew_2  
+   ![cols_2_distinct_10000_corr_2_skew_2](https://github.com/spiceandwolf/learning_cardinality_estimator_distributed_exploration/blob/main/Synthetic/cols_2_distinct_10000_corr_2_skew_2.naru.png)
 
  1.4 UAE/UAE-Q
-  初步结论 :
-  1.4.1
-  1.4.2
+  初步结论 :  
+  1.4.1  
+  1.4.2  
 
 ### 2.模拟一般分布式数据库的数据划分，query只在单表上进行
 
@@ -122,12 +122,12 @@ $\color{Azure} {基于学习的ai分布式基数估计器实现目标：满足�
 
  4种属性A1, A2, A3, A4，值域1w，相关性和偏斜度是变量，其中A1和A2, A3, A4存在相关性，这两组之间相互独立。数据分布在4个节点P1, P2, P3, P4上。P1中有A1, A2, A3, P2有A2, A3, A4, P3有A3, A4, A1，P4有A1, A2, A4。每个节点各存储每种属性1/3的数据。  
 
-    ｜    ｜A1｜A2｜A3｜A4｜  
-    ----｜--｜--｜--｜--
-    ｜P1｜✓(0~3w3k333)     ｜✓(3w3k333~6w6k666)｜✓(6w6k666~9w9k999)｜                  ｜
-    ｜P2｜                 ｜✓(0~3w3k333)      ｜✓(3w3k333~6w6k666)｜✓(6w6k666~9w9k999)｜
-    ｜P3|✓(6w6k666~9w9k999)| |✓(0~3w3k333)|✓(3w3k333~6w6k666)
-    ｜P4|✓(3w3k333~6w6k666)|✓(6w6k666~9w9k999)| |✓(0~3w3k333)
+    |  |A1                |A2                |A3                |A4                |  
+    |--|------------------|------------------|------------------|------------------|
+    |P1|✓(0~3w3k333)      |✓(3w3k333~6w6k666)|✓(6w6k666~9w9k999)|                  |
+    |P2|                  |✓(0~3w3k333)      |✓(3w3k333~6w6k666)|✓(6w6k666~9w9k999)|
+    |P3|✓(6w6k666~9w9k999)|                  |✓(0~3w3k333)      |✓(3w3k333~6w6k666)|
+    |P4|✓(3w3k333~6w6k666)|✓(6w6k666~9w9k999)|                  |✓(0~3w3k333)      |
 
     <!-- <table>
         <tr>
@@ -139,7 +139,7 @@ $\color{Azure} {基于学习的ai分布式基数估计器实现目标：满足�
         </tr>
     </table> -->
 
- 各子表的主键可以是在原始表中的每行原始数据的idx。
-  2.1 mscn
-  2.2 deepdb
-  2.3 Naru/NerouCard
+ 各子表的主键可以是在原始表中的每行原始数据的idx。  
+  2.1 mscn  
+  2.2 deepdb  
+  2.3 Naru/NerouCard  
