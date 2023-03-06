@@ -21,6 +21,7 @@
   mscn和deepdb对比 : query-driven vs data-driven，两种简单模型。缺陷在于两模型结构不同，无法控制变量。
 
   deepdb和Naru/Neurocard对比 : data-driven的简单模型vs data-driven的复杂模型。  
+
   Naru和UAE-Q对比 : data-driven的复杂模型 vs query-driven的复杂模型(都是深度自回归模型)。  
   
   mscn和UAE-Q对比 : query-driven的简单模型 vs query-driven的复杂模型。  
@@ -65,9 +66,10 @@ $\color{Azure} {基于学习的ai分布式基数估计器实现目标：满足�
 
    mscn的结果没有能体现出数据间的相关性，基于独立性假设的真实基数估计可以看出在corr=2时的准确度要显著优于corr=8的情况。  
 
-  1.1.1 cols_2_distinct_10000_corr_2_skew_2
-￼
-  1.1.2 cols_2_distinct_10000_corr_8_skew_2
+   1.1.1 cols_2_distinct_10000_corr_2_skew_2  
+   ![cols_2_distinct_10000_corr_2_skew_2](https://github.com/spiceandwolf/learning_cardinality_estimator_distributed_exploration/blob/main/Synthetic/cols_2_distinct_10000_corr_2_skew_2.mscn.png)
+   1.1.2 cols_2_distinct_10000_corr_8_skew_2  
+   ![cols_2_distinct_10000_corr_8_skew_2](https://github.com/spiceandwolf/learning_cardinality_estimator_distributed_exploration/blob/main/Synthetic/cols_2_distinct_10000_corr_8_skew_2.mscn.png)
 ￼
  1.2 deepdb  
 
@@ -83,10 +85,12 @@ $\color{Azure} {基于学习的ai分布式基数估计器实现目标：满足�
 
    在现在这种数据集上的效果最好，需要更复杂的模拟环境做进一步研究。  
 
-  1.2.1 cols_2_distinct_10000_corr_2_skew_2
+   1.2.1 cols_2_distinct_10000_corr_2_skew_2  
+   ![cols_2_distinct_10000_corr_2_skew_2](https://github.com/spiceandwolf/learning_cardinality_estimator_distributed_exploration/blob/main/Synthetic/cols_2_distinct_10000_corr_2_skew_2.deepdb.png)
 ￼
-  1.2.2 cols_2_distinct_10000_corr_8_skew_2
-￼
+   1.2.2 cols_2_distinct_10000_corr_8_skew_2
+￼  ![cols_2_distinct_10000_corr_8_skew_2](https://github.com/spiceandwolf/learning_cardinality_estimator_distributed_exploration/blob/main/Synthetic/  cols_2_distinct_10000_corr_8_skew_2.deepdb.png)  
+
  1.3 Naru/NerouCard  
 
   代表类型 : data-driven中的自回归模型。  
@@ -101,10 +105,12 @@ $\color{Azure} {基于学习的ai分布式基数估计器实现目标：满足�
 
    在高相关性的数据集上，分布式结构下的Naru的结果和子查询的真实基数估计的结果对于完整查询的log(qerror)都有所升高，不过大部分例子中两者性能都很接近，有时分布式结构下的Naru对完整查询的log(qerror)还是更低的一个，说明可能具有更好的估计效果。  
 
-  1.3.1 cols_2_distinct_10000_corr_2_skew_2
+   1.3.1 cols_2_distinct_10000_corr_2_skew_2  
+   ![cols_2_distinct_10000_corr_2_skew_2](https://github.com/spiceandwolf/learning_cardinality_estimator_distributed_exploration/blob/main/Synthetic/cols_2_distinct_10000_corr_2_skew_2.naru.png)
 ￼
-  1.3.2 cols_2_distinct_10000_corr_8_skew_2
-￼
+   1.3.2 cols_2_distinct_10000_corr_8_skew_2
+￼  ![cols_2_distinct_10000_corr_8_skew_2](https://github.com/spiceandwolf/learning_cardinality_estimator_distributed_exploration/blob/main/Synthetic/cols_2_distinct_10000_corr_8_skew_2.naru.png)  
+
  1.4 UAE/UAE-Q
   初步结论 :
   1.4.1
@@ -117,13 +123,13 @@ $\color{Azure} {基于学习的ai分布式基数估计器实现目标：满足�
  4种属性A1, A2, A3, A4，值域1w，相关性和偏斜度是变量，其中A1和A2, A3, A4存在相关性，这两组之间相互独立。数据分布在4个节点P1, P2, P3, P4上。P1中有A1, A2, A3, P2有A2, A3, A4, P3有A3, A4, A1，P4有A1, A2, A4。每个节点各存储每种属性1/3的数据。  
 
     ｜    ｜A1｜A2｜A3｜A4｜  
-    ｜----｜--｜--｜--｜--｜  
+    ----｜--｜--｜--｜--
     ｜P1｜✓(0~3w3k333)     ｜✓(3w3k333~6w6k666)｜✓(6w6k666~9w9k999)｜                  ｜
     ｜P2｜                 ｜✓(0~3w3k333)      ｜✓(3w3k333~6w6k666)｜✓(6w6k666~9w9k999)｜
-    ｜P3|✓(6w6k666~9w9k999)|✓(0~3w3k333) ✓(3w3k333~6w6k666)
-    ｜P4 ✓(3w3k333~6w6k666) ✓(6w6k666~9w9k999)  ✓(0~3w3k333)
+    ｜P3|✓(6w6k666~9w9k999)| |✓(0~3w3k333)|✓(3w3k333~6w6k666)
+    ｜P4|✓(3w3k333~6w6k666)|✓(6w6k666~9w9k999)| |✓(0~3w3k333)
 
-    <table>
+    <!-- <table>
         <tr>
         <td></td>
         <td>A1</td>
@@ -131,7 +137,7 @@ $\color{Azure} {基于学习的ai分布式基数估计器实现目标：满足�
         <td>A3</td>
         <td>A4</td>
         </tr>
-    </table>
+    </table> -->
 
  各子表的主键可以是在原始表中的每行原始数据的idx。
   2.1 mscn
