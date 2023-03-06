@@ -30,7 +30,7 @@
 
   query/Q : 未经分布式系统划分，全局的、完整的、原始的查询语句。  
 
-  subquery/subQ/distributed_query/distributed_Q : 经分布式系统划分后各分布式节点中局部的、片段的、新生成的查询语句。$\color{red} {这种查询准确得说，是因为在各分布式节点中存在的属性并不是所属Table中的全部属性，为了在某一分布式节点中执行某一条query/Q，需要参考这一节点没存储的属性，把原本的query/Q中对应属性的谓词删除(或改写成永真的，或是其他masking方法)，而生成/改写出的一组新的查询。}$  
+  subquery/subQ/distributed_query/distributed_Q : 经分布式系统划分后各分布式节点中局部的、片段的、新生成的查询语句。$\color{red}{这种查询准确得说，是因为在各分布式节点中存在的属性并不是所属Table中的全部属性，为了在某一分布式节点中执行某一条query/Q，需要参考这一节点没存储的属性，把原本的query/Q中对应属性的谓词删除(改写成永真的，或是其他masking方法)，而生成/改写出的一组新的查询。}$  
 
   Table/T/Relation/R : 未经过分布式系统划分，全局的、完整的、原始的关系表，简称为原始表。  
   
@@ -40,7 +40,7 @@
 
   适用操作 : 每个属性有且只有一个的=,<, >(≤,≥也可以支持吗)。采用特定的编码方式支持每个属性多个以及多种操作。
 
-$\color{Azure} {基于学习的ai分布式基数估计器实现目标：满足在各结点上对应子查询的基数估计准确同时，也要满足该完整查询语句的准确基数估计！}$
+ $\color{Azure}{基于学习的ai分布式基数估计器实现目标：满足在各结点上对应子查询的基数估计准确同时，也要满足该完整查询语句的准确基数估计！}$
 
 ### 1.模拟最简单的垂直划分，多少属性多少子表，query只在单表上进行
 
@@ -67,10 +67,11 @@ $\color{Azure} {基于学习的ai分布式基数估计器实现目标：满足�
    mscn的结果没有能体现出数据间的相关性，基于独立性假设的真实基数估计可以看出在corr=2时的准确度要显著优于corr=8的情况。  
 
    1.1.1 cols_2_distinct_10000_corr_2_skew_2  
-   ![cols_2_distinct_10000_corr_2_skew_2](https://github.com/spiceandwolf/learning_cardinality_estimator_distributed_exploration/blob/main/Synthetic/cols_2_distinct_10000_corr_2_skew_2.mscn.png)
+   ![cols_2_distinct_10000_corr_2_skew_2](https://github.com/spiceandwolf/learning_cardinality_estimator_distributed_exploration/blob/main/Synthetic/cols_2_distinct_10000_corr_2_skew_2.mscn.png)  
+
    1.1.2 cols_2_distinct_10000_corr_8_skew_2  
-   ![cols_2_distinct_10000_corr_8_skew_2](https://github.com/spiceandwolf/learning_cardinality_estimator_distributed_exploration/blob/main/Synthetic/cols_2_distinct_10000_corr_8_skew_2.mscn.png)
-￼
+   ![cols_2_distinct_10000_corr_8_skew_2](https://github.com/spiceandwolf/learning_cardinality_estimator_distributed_exploration/blob/main/Synthetic/cols_2_distinct_10000_corr_8_skew_2.mscn.png)  
+
  1.2 deepdb  
 
   代表类型 : data-driven中的SPN模型。  
@@ -87,10 +88,10 @@ $\color{Azure} {基于学习的ai分布式基数估计器实现目标：满足�
 
    1.2.1 cols_2_distinct_10000_corr_2_skew_2  
    ![cols_2_distinct_10000_corr_2_skew_2](https://github.com/spiceandwolf/learning_cardinality_estimator_distributed_exploration/blob/main/Synthetic/cols_2_distinct_10000_corr_2_skew_2.deepdb.png)  
-￼
+
    1.2.2 cols_2_distinct_10000_corr_8_skew_2  
    ![cols_2_distinct_10000_corr_8_skew_2](https://github.com/spiceandwolf/learning_cardinality_estimator_distributed_exploration/blob/main/Synthetic/cols_2_distinct_10000_corr_8_skew_2.deepdb.png)
-￼  
+
  1.3 Naru/NerouCard  
 
   代表类型 : data-driven中的自回归模型。  
@@ -107,7 +108,7 @@ $\color{Azure} {基于学习的ai分布式基数估计器实现目标：满足�
 
    1.3.1 cols_2_distinct_10000_corr_2_skew_2  
    ![cols_2_distinct_10000_corr_2_skew_2](https://github.com/spiceandwolf/learning_cardinality_estimator_distributed_exploration/blob/main/Synthetic/cols_2_distinct_10000_corr_2_skew_2.naru.png)
-￼
+
    1.3.2 cols_2_distinct_10000_corr_8_skew_2  
    ![cols_2_distinct_10000_corr_2_skew_2](https://github.com/spiceandwolf/learning_cardinality_estimator_distributed_exploration/blob/main/Synthetic/cols_2_distinct_10000_corr_2_skew_2.naru.png)
 
@@ -123,21 +124,11 @@ $\color{Azure} {基于学习的ai分布式基数估计器实现目标：满足�
  4种属性A1, A2, A3, A4，值域1w，相关性和偏斜度是变量，其中A1和A2, A3, A4存在相关性，这两组之间相互独立。数据分布在4个节点P1, P2, P3, P4上。P1中有A1, A2, A3, P2有A2, A3, A4, P3有A3, A4, A1，P4有A1, A2, A4。每个节点各存储每种属性1/3的数据。  
 
     |  |A1                |A2                |A3                |A4                |  
-    |--|------------------|------------------|------------------|------------------|
+    ---|------------------|------------------|------------------|-------------------
     |P1|✓(0~3w3k333)      |✓(3w3k333~6w6k666)|✓(6w6k666~9w9k999)|                  |
     |P2|                  |✓(0~3w3k333)      |✓(3w3k333~6w6k666)|✓(6w6k666~9w9k999)|
     |P3|✓(6w6k666~9w9k999)|                  |✓(0~3w3k333)      |✓(3w3k333~6w6k666)|
     |P4|✓(3w3k333~6w6k666)|✓(6w6k666~9w9k999)|                  |✓(0~3w3k333)      |
-
-    <!-- <table>
-        <tr>
-        <td></td>
-        <td>A1</td>
-        <td>A2</td>
-        <td>A3</td>
-        <td>A4</td>
-        </tr>
-    </table> -->
 
  各子表的主键可以是在原始表中的每行原始数据的idx。  
   2.1 mscn  
