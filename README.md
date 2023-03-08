@@ -133,7 +133,7 @@
  card = (SEL(P1) + SEL(P3)) * (SEL(P2) + SEL(P4)) * num ？只能在join后再求基数吗？
 
  在postgresql数据库中建立多个db模拟分布式节点，每个db实例中都有表{table.table_name}
- 
+
   2.1 mscn  
   2.2 deepdb  
   2.3 Naru/NerouCard  
