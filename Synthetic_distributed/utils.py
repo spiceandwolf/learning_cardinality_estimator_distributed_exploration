@@ -232,3 +232,4 @@ def parse_query(query_str, schema):
     logger.debug(query.query_type, query.table_set, query.relationship_set, query.table_where_condition_dict, query.conditions,
           query.aggregation_operations, query.group_bys)  # 重要
     return query
+
