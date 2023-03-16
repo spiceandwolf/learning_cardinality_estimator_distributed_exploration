@@ -2,7 +2,8 @@
 
 2.0  
 分析 : 分布式查询中涉及基数估计的操作  
-结论 : 查询优化中的直接连接和半连接等  
+结论 :   
+查询优化中的直接连接和半连接等    
 2.1  
 分析 : AI基数估计器具有更高的准确性及泛化能力(?)，无法频繁更新(缺点？但意味着稳定？或许可以依靠这一特性实现将大多数查询在本地副本进行查询优化？即查询本地主副本(负责写入的)+本地从副本(只是备份的)) ，要求AI基数估计器还是存在于各个节点上  
 结论 :  
@@ -22,16 +23,18 @@
 2.6  
 分析 : 估计前连接与估计后连接。估计前连接，对多表连接的形式建模。估计后连接，分布式条件下各节点估计值的连接。  
 2.7  
-分析 : Naru中为了计算范围查询采用采样的方式，为什么不用概率密度函数+积分? Naru的渐进式采样是在生成的Naru模型基础上根据Naru模型给出的条件概率分布进行采样的。渐进式采样只能串行执行？结论 :
-采样时使用多维直方图来代替会有多大影响？能否融合负采样？  
+分析 : Naru中为了计算范围查询采用采样的方式，为什么不用概率密度函数+积分? Naru的渐进式采样是在生成的Naru模型基础上根据Naru模型给出的条件概率分布进行采样的。渐进式采样只能串行执行？  
+结论 :  
+采样时使用多维直方图来代替会有多大影响？能否融合负采样？更新 : ***Naru使用自回归模型作为基础，自回归模型根据输入，输出一个由条件概率组成的序列，可以直接计算出点查询的概率(所以不能使用概率密度函数+积分的方法计算概率)。对于范围查询，如果是小的范围查询，查询范围内的所有点查询的概率之和就是这个范围查询的概率，但如果是较大的范围查询，因为无法继续这样容易的计算出所有范围内的点查询，因此一般使用蒙特卡罗法计算范围查询的概率。一般的蒙特卡洛法直接使用均匀采样，但存在误差，为了无偏采样，Naru使用渐进式采样是为了计算范围查询的概率。渐进式采样是一种使用S次采样估计查询范围R1 × · · · × Rn的密度的方法。*** Progressive sampling bears connections to sampling algorithms in graphical models. Notice that the autoregressive factorization corresponds to a complex graphical model where each node i has all nodes with indices < i as its parents. In this interpretation, progressive sampling extends the forward sampling with likelihood weighting algorithm [23] to allow variables taking on ranges of values (the former, in its default form, allows equality predicates only).原文中这一段还需要继续理解理解。  
 
 ***  
 ↑  2月  ↑  
 ***  
+
 2.8  
-~~分析 : 一条sql语句进入分布式数据库后到被进行基数估计都会经历哪些步骤？以OB为例 : 1.进行语法和词法解析，生成查询语法树。 ➔ 2.对查询语法树进行语义分析，生成对应的查询对象。 ➔ 3.依据关系代数对查询对象进行等价改写。 ➔ 4.为查询对象生成执行代价最优的逻辑计划。 ➔ 5……. 在第4步的时候一般就会使用到基数，在这一步或更前面的过程中就应该涉及根据查询对分布式数据库中各节点中有关的数据进行基数估计，第3步后获得的sql是要被基数估计前的最终形态？参考OB中的Multi-Part DML的样子，什么样的？~~感觉是最没用的分析。
+~~分析 : 一条sql语句进入分布式数据库后到被进行基数估计都会经历哪些步骤？以OB为例 : 1.进行语法和词法解析，生成查询语法树。 ➔ 2.对查询语法树进行语义分析，生成对应的查询对象。 ➔ 3.依据关系代数对查询对象进行等价改写。 ➔ 4.为查询对象生成执行代价最优的逻辑计划。 ➔ 5……. 在第4步的时候一般就会使用到基数，在这一步或更前面的过程中就应该涉及根据查询对分布式数据库中各节点中有关的数据进行基数估计，第3步后获得的sql是要被基数估计前的最终形态？参考OB中的Multi-Part DML的样子，什么样的？~~感觉是最没用的分析。  
 2.9  
-分析 : 概率图与图卷积神经网络GNN
+分析 : 概率图与图卷积神经网络GNN  
 2.10  
 ~~分析 : 黎曼积分与勒贝格积分，定义域和值域，数据和分布，查询和基数。~~并没什么意义。  
 2.11  
@@ -44,9 +47,9 @@
 分析 : 在![OB4.0的分布式查询优化相关资料](https://zhuanlan.zhihu.com/p/586113453)中有提到 : ***分布式查询优化一定要使用一阶段的方法，即要同时枚举本地算法和分布式算法并且使用分布式代价模型来计算代价，而不是通过分阶段的方式来枚举本地算法和分布式算法。  在各节点中的传统基数估计器都是“全局相同结构的”，因为在连接时从其他节点上拉取数据的schema很有可能和本地的schema不同，所以各节点应知晓数据库中所有schema的全貌。因此，与之相对应的，现有的学习型基数估计方法要是想应用于分布式数据库，各个节点中持有的学习型基数估计模型在训练时也必须是涵盖所有schema。***  ~~半连接优化 : 只需要各节点自己的基数估计器。 直接连接优化 : ~~  
 结论 : 能否说现有的学习型基数估计器无法适配分布式数据库？query/data-driven的基数估计器都会因为水平划分造成的不同节点上复数个同构子schema而不能正常工作，因为它们可能在这些场地上产生相似的结果(受困于当前学习型基数估计器的实现，有些学习型基数估计器在估计同一查询时的结果可能不唯一)，另外在训练模型时，特别是data-driven的，受到水平划分的影响，只能得到所属节点自身的数据模型，没法直接用于正常的基数估计？；应在模型中引入分区信息，降低受到水平划分的影响。能否实现不依赖于schema全貌的学习型基数估计，每个节点的学习型基数估计只需专注自己的schema，但有来自其他场地连接操作时只需要把其他场地的模型拼在一起就能继续正常估计？  
 2.15  
-分析 : 直方图法在的join条件下的估计过程。
+分析 : 直方图法在的join条件下的估计过程。  
 结论 : 在![3.6.1.2 Refinements: Relative Effectiveness of Histograms](https://dsf.berkeley.edu/cs286/papers/synopses-fntdb2012.pdf)  
 2.16  
 分析 : ![贝叶斯优化不需要求导数。](https://zhuanlan.zhihu.com/p/76269142)训练过程中求导数的重要性可以参照UAE模型的论文。    
-2.17
-分析 : 模型融合。Stacking可以与无监督学习方法结合，案例可参考Kaggle的“Otto Group Product Classification Challenge”中，Mike Kim提出的方法 [6]。  
+2.17  
+分析 : 模型融合。Stacking可以与无监督学习方法结合，案例可参考Kaggle的“Otto Group Product Classification Challenge”中，Mike Kim提出的方法 [6]。  根据new bing的回答贝叶斯深度学习和meta learning相结合的例子有bayesian meta-learning for the few-shot setting via deep kernels, bayesian model-agnostic meta-learning, pac-bayesian meta-learning: from theory to practice
