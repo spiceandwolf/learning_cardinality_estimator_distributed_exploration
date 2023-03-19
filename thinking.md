@@ -5,9 +5,9 @@
 结论 :   
 查询优化中的直接连接和半连接等    
 2.1  
-分析 : AI基数估计器具有更高的准确性及泛化能力(?)，无法频繁更新(缺点？但意味着稳定？或许可以依靠这一特性实现将大多数查询在本地副本进行查询优化？即查询本地主副本(负责写入的)+本地从副本(只是备份的)) ，要求AI基数估计器还是存在于各个节点上  
+分析 : AI基数估计器具有更高的准确性及泛化能力(?)，无法频繁更新(缺点？但意味着稳定？或许可以依靠这一特性实现将大多数查询在本地副本进行查询优化？即查询本地主副本(负责写入的)+本地从副本(只是备份的)) ，要求AI基数估计器还是存在于各个节点上？更新 : ***所有节点都应该知晓数据库的schema?如果是全局统一的data-driven模型，需要先在各个节点中抽取足够的数据传输到某一个用于训练的节点上，再将训练好的模型分发，还可以直接解决多表连接情况下各节点中数据间的关系？问题在于数据量及传输代价；如果是局部的data-driven模型，直接在本地训练模型时不涉及数据传输，但解决各节点中数据间的关系，还需要传输数据到某一个用于训练的节点上用机器学习方法找出？这时为了计算多表连接下各表间的关系还是需要从各节点抽取数据再传输到某一结点上进行计算。但这一过程涉及到的数据量能否有所减小？从各节点本地训练得到的模型是各节点中数据的一种信息压缩，或许可以通过使用这些模型，而不是原始数据的样本来计算多表连接下对应的总体模型？这一idea出自论文![ Unsupervised Selectivity Estimation by Integrating Gaussian Mixture Models and an Autoregressive Model](), 这篇文章就先对一个relation中的属性用GMM建模然后再使用DAR模型给属性间的相关性建模。如果采用的是Gaussian Processes生产的模型所需的传输代价可能会相对于直接传数据来说更小。*** 
 结论 :  
-优先选择局部混合模型？每一节点负责更新主副本的ai基数估计器，然后将其扩散给其他节点的从副本(有一致性问题吗，分布式机器学习是什么样的？)  
+优先选择局部混合模型？每一节点负责更新主副本的ai基数估计器，然后将其扩散给其他节点的从副本(有一致性问题吗，分布式机器学习是什么样的？)。   
 2.2  
 分析 : 如果要给所有节点同步模型，传输模型过程中的开销怎么计算？  
 结论 :  
@@ -52,4 +52,11 @@
 2.16  
 分析 : ![贝叶斯优化不需要求导数。](https://zhuanlan.zhihu.com/p/76269142)训练过程中求导数的重要性可以参照UAE模型的论文。    
 2.17  
-分析 : 模型融合。Stacking可以与无监督学习方法结合，案例可参考Kaggle的“Otto Group Product Classification Challenge”中，Mike Kim提出的方法 [6]。  根据new bing的回答贝叶斯深度学习和meta learning相结合的例子有bayesian meta-learning for the few-shot setting via deep kernels, bayesian model-agnostic meta-learning, pac-bayesian meta-learning: from theory to practice
+分析 : 模型融合。Stacking可以与无监督学习方法结合，案例可参考Kaggle的“Otto Group Product Classification Challenge”中，Mike Kim提出的方法 [6]。  根据new bing的回答贝叶斯深度学习和meta learning相结合的例子有bayesian meta-learning for the few-shot setting via deep kernels, bayesian model-agnostic meta-learning, pac-bayesian meta-learning: from theory to practice  
+2.18  
+分析 : FLAT在处理多表连接时没有使用全外连接的方式，而是局部连接的一种树结构，可以参考。  
+2.19  
+分析 : localnn模型的效果和MSCN模型的效果差不多(![见Learned Cardinality Estimation : A Design Space Exploration and a Comparative Evaluation](http://dbgroup.cs.tsinghua.edu.cn/ligl/papers/vldb22-card-exp.pdf))，但为什么基本没有后续研究。  
+2.20  
+分析 : 分布式查询下学习型基数估计器对半连接算法的影响？半连接(semi-join)是对全连接结果属性列的一种缩减操作,它由投影和连接操作导出,投影操作实现连接属性基数的缩减,连接操作实现左连接关系元组数的缩减。  
+结论 : ***在分布式数据库中的查询优化，需要估算查询造成的多表连接的基数。更准确的基数估计主要是影响半连接算法的准确度，不影响算法本身？***解决了问题2.0？  
