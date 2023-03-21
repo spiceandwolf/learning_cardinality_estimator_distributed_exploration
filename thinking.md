@@ -5,7 +5,7 @@
 结论 :   
 查询优化中的直接连接和半连接等    
 2.1  
-分析 : AI基数估计器具有更高的准确性及泛化能力(?)，无法频繁更新(缺点？但意味着稳定？或许可以依靠这一特性实现将大多数查询在本地副本进行查询优化？即查询本地主副本(负责写入的)+本地从副本(只是备份的)) ，要求AI基数估计器还是存在于各个节点上？更新 : ***所有节点都应该知晓数据库的schema?如果是全局统一的data-driven模型，需要先在各个节点中抽取足够的数据传输到某一个用于训练的节点上，再将训练好的模型分发，还可以直接解决多表连接情况下各节点中数据间的关系？问题在于数据量及传输代价；如果是局部的data-driven模型，直接在本地训练模型时不涉及数据传输，但解决各节点中数据间的关系，还需要传输数据到某一个用于训练的节点上用机器学习方法找出？这时为了计算多表连接下各表间的关系还是需要从各节点抽取数据再传输到某一结点上进行计算。但这一过程涉及到的数据量能否有所减小？从各节点本地训练得到的模型是各节点中数据的一种信息压缩，或许可以通过使用这些模型，而不是原始数据的样本来计算多表连接下对应的总体模型？这一idea出自论文![ Unsupervised Selectivity Estimation by Integrating Gaussian Mixture Models and an Autoregressive Model](), 这篇文章就先对一个relation中的属性用GMM建模然后再使用DAR模型给属性间的相关性建模。如果采用的是Gaussian Processes生产的模型所需的传输代价可能会相对于直接传数据来说更小。*** 
+分析 : AI基数估计器具有更高的准确性及泛化能力(?)，无法频繁更新(缺点？但意味着稳定？或许可以依靠这一特性实现将大多数查询在本地副本进行查询优化？即查询本地主副本(负责写入的)+本地从副本(只是备份的)) ，要求AI基数估计器还是存在于各个节点上？更新 : ***所有节点都应该知晓数据库的schema?如果是全局统一的data-driven模型，需要先在各个节点中抽取足够的数据传输到某一个用于训练的节点上，再将训练好的模型分发，还可以直接解决多表连接情况下各节点中数据间的关系？问题在于数据量及传输代价；如果是局部的data-driven模型，直接在本地训练模型时不涉及数据传输，但解决各节点中数据间的关系，还需要传输数据到某一个用于训练的节点上用机器学习方法找出？这时为了计算多表连接下各表间的关系还是需要从各节点抽取数据再传输到某一结点上进行计算。但这一过程涉及到的数据量能否有所减小？从各节点本地训练得到的模型是各节点中数据的一种信息压缩，或许可以通过使用这些模型，而不是原始数据的样本来计算多表连接下对应的总体模型？这一idea出自论文[ Unsupervised Selectivity Estimation by Integrating Gaussian Mixture Models and an Autoregressive Model](https://openproceedings.org/2022/conf/edbt/paper-65.pdf), 这篇文章就先对一个relation中的属性用GMM建模然后再使用DAR模型给属性间的相关性建模。如果采用的是Gaussian Processes生产的模型所需的传输代价可能会相对于直接传数据来说更小。*** 
 结论 :  
 优先选择局部混合模型？每一节点负责更新主副本的ai基数估计器，然后将其扩散给其他节点的从副本(有一致性问题吗，分布式机器学习是什么样的？)。   
 2.2  
@@ -44,19 +44,21 @@
 2.13  
 分析 : 幂律分布。“DeepWalk中如果图符合幂律分布的话，就可以用NLP的方法做了，论文是用的Word2vec”，数据库中数据的分布会符合幂律分布吗。  
 2.14   
-分析 : 在![OB4.0的分布式查询优化相关资料](https://zhuanlan.zhihu.com/p/586113453)中有提到 : ***分布式查询优化一定要使用一阶段的方法，即要同时枚举本地算法和分布式算法并且使用分布式代价模型来计算代价，而不是通过分阶段的方式来枚举本地算法和分布式算法。  在各节点中的传统基数估计器都是“全局相同结构的”，因为在连接时从其他节点上拉取数据的schema很有可能和本地的schema不同，所以各节点应知晓数据库中所有schema的全貌。因此，与之相对应的，现有的学习型基数估计方法要是想应用于分布式数据库，各个节点中持有的学习型基数估计模型在训练时也必须是涵盖所有schema。***  ~~半连接优化 : 只需要各节点自己的基数估计器。 直接连接优化 : ~~  
+分析 : 在[OB4.0的分布式查询优化相关资料](https://zhuanlan.zhihu.com/p/586113453)中有提到 : ***分布式查询优化一定要使用一阶段的方法，即要同时枚举本地算法和分布式算法并且使用分布式代价模型来计算代价，而不是通过分阶段的方式来枚举本地算法和分布式算法。  在各节点中的传统基数估计器都是“全局相同结构的”，因为在连接时从其他节点上拉取数据的schema很有可能和本地的schema不同，所以各节点应知晓数据库中所有schema的全貌。因此，与之相对应的，现有的学习型基数估计方法要是想应用于分布式数据库，各个节点中持有的学习型基数估计模型在训练时也必须是涵盖所有schema。***  ~~半连接优化 : 只需要各节点自己的基数估计器。 直接连接优化 : ~~  
 结论 : 能否说现有的学习型基数估计器无法适配分布式数据库？query/data-driven的基数估计器都会因为水平划分造成的不同节点上复数个同构子schema而不能正常工作，因为它们可能在这些场地上产生相似的结果(受困于当前学习型基数估计器的实现，有些学习型基数估计器在估计同一查询时的结果可能不唯一)，另外在训练模型时，特别是data-driven的，受到水平划分的影响，只能得到所属节点自身的数据模型，没法直接用于正常的基数估计？；应在模型中引入分区信息，降低受到水平划分的影响。能否实现不依赖于schema全貌的学习型基数估计，每个节点的学习型基数估计只需专注自己的schema，但有来自其他场地连接操作时只需要把其他场地的模型拼在一起就能继续正常估计？  
 2.15  
 分析 : 直方图法在的join条件下的估计过程。  
-结论 : 在![3.6.1.2 Refinements: Relative Effectiveness of Histograms](https://dsf.berkeley.edu/cs286/papers/synopses-fntdb2012.pdf)  
+结论 : 在[3.6.1.2 Refinements: Relative Effectiveness of Histograms](https://dsf.berkeley.edu/cs286/papers/synopses-fntdb2012.pdf)  
 2.16  
-分析 : ![贝叶斯优化不需要求导数。](https://zhuanlan.zhihu.com/p/76269142)训练过程中求导数的重要性可以参照UAE模型的论文。    
+分析 : [贝叶斯优化不需要求导数。](https://zhuanlan.zhihu.com/p/76269142)训练过程中求导数的重要性可以参照UAE模型的论文。    
 2.17  
 分析 : 模型融合。Stacking可以与无监督学习方法结合，案例可参考Kaggle的“Otto Group Product Classification Challenge”中，Mike Kim提出的方法 [6]。  根据new bing的回答贝叶斯深度学习和meta learning相结合的例子有bayesian meta-learning for the few-shot setting via deep kernels, bayesian model-agnostic meta-learning, pac-bayesian meta-learning: from theory to practice  
 2.18  
 分析 : FLAT在处理多表连接时没有使用全外连接的方式，而是局部连接的一种树结构，可以参考。  
 2.19  
-分析 : localnn模型的效果和MSCN模型的效果差不多(![见Learned Cardinality Estimation : A Design Space Exploration and a Comparative Evaluation](http://dbgroup.cs.tsinghua.edu.cn/ligl/papers/vldb22-card-exp.pdf))，但为什么基本没有后续研究。  
+分析 : localnn模型的效果和MSCN模型的效果差不多([见Learned Cardinality Estimation : A Design Space Exploration and a Comparative Evaluation](http://dbgroup.cs.tsinghua.edu.cn/ligl/papers/vldb22-card-exp.pdf))，但为什么基本没有后续研究。  
 2.20  
 分析 : 分布式查询下学习型基数估计器对半连接算法的影响？半连接(semi-join)是对全连接结果属性列的一种缩减操作,它由投影和连接操作导出,投影操作实现连接属性基数的缩减,连接操作实现左连接关系元组数的缩减。  
 结论 : ***在分布式数据库中的查询优化，需要估算查询造成的多表连接的基数。更准确的基数估计主要是影响半连接算法的准确度，不影响算法本身？***解决了问题2.0？  
+2.21  
+分析 : PRMs, probabilitistic relational models, 概率关系模型。一个PRM包含了schema全部内容的模型 : NeuroCard; 多个PRMs包含了schema全部内容的模型 : FLAT，BayesCard
