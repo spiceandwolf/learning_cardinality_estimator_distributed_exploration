@@ -3,11 +3,11 @@
 2.0  
 分析 : 分布式查询中涉及基数估计的操作  
 结论 :   
-查询优化中的直接连接和半连接等    
+查询优化中的直接连接和半连接等。3月更新 : 见问题2.20。   
 2.1  
-分析 : AI基数估计器具有更高的准确性及泛化能力(?)，无法频繁更新(缺点？但意味着稳定？或许可以依靠这一特性实现将大多数查询在本地副本进行查询优化？即查询本地主副本(负责写入的)+本地从副本(只是备份的)) ，要求AI基数估计器还是存在于各个节点上？更新 : ***所有节点都应该知晓数据库的schema?如果是全局统一的data-driven模型，需要先在各个节点中抽取足够的数据传输到某一个用于训练的节点上，再将训练好的模型分发，还可以直接解决多表连接情况下各节点中数据间的关系？问题在于数据量及传输代价；如果是局部的data-driven模型，直接在本地训练模型时不涉及数据传输，但解决各节点中数据间的关系，还需要传输数据到某一个用于训练的节点上用机器学习方法找出？这时为了计算多表连接下各表间的关系还是需要从各节点抽取数据再传输到某一结点上进行计算。但这一过程涉及到的数据量能否有所减小？从各节点本地训练得到的模型是各节点中数据的一种信息压缩，或许可以通过使用这些模型，而不是原始数据的样本来计算多表连接下对应的总体模型？这一idea出自论文[ Unsupervised Selectivity Estimation by Integrating Gaussian Mixture Models and an Autoregressive Model](https://openproceedings.org/2022/conf/edbt/paper-65.pdf), 这篇文章就先对一个relation中的属性用GMM建模然后再使用DAR模型给属性间的相关性建模。如果采用的是Gaussian Processes生产的模型所需的传输代价可能会相对于直接传数据来说更小。*** 
+分析 : AI基数估计器具有更高的准确性及泛化能力(?)，无法频繁更新(缺点？但意味着稳定？或许可以依靠这一特性实现将大多数查询在本地副本进行查询优化？即查询本地主副本(负责写入的)+本地从副本(只是备份的)) ，要求AI基数估计器还是存在于各个节点上？3月更新 : ***所有节点都应该知晓数据库的schema?如果是全局统一的data-driven模型，需要先在各个节点中抽取足够的数据传输到某一个用于训练的节点上，再将训练好的模型分发，还可以直接解决多表连接情况下各节点中数据间的关系？问题在于数据量及传输代价；如果是局部的data-driven模型，直接在本地训练模型时不涉及数据传输，但解决各节点中数据间的关系，还需要传输数据到某一个用于训练的节点上用机器学习方法找出？这时为了计算多表连接下各表间的关系还是需要从各节点抽取数据再传输到某一结点上进行计算。但这一过程涉及到的数据量能否有所减小？从各节点本地训练得到的模型是各节点中数据的一种信息压缩，或许可以通过使用这些模型，而不是原始数据的样本来计算多表连接下对应的总体模型？这一idea出自论文[ Unsupervised Selectivity Estimation by Integrating Gaussian Mixture Models and an Autoregressive Model](https://openproceedings.org/2022/conf/edbt/paper-65.pdf), 这篇文章就先对一个relation中的属性用GMM建模然后再使用DAR模型给属性间的相关性建模。如果采用的是Gaussian Processes生产的模型所需的传输代价可能会相对于直接传数据来说更小。***   
 结论 :  
-优先选择局部混合模型？每一节点负责更新主副本的ai基数估计器，然后将其扩散给其他节点的从副本(有一致性问题吗，分布式机器学习是什么样的？)。   
+优先选择局部混合模型？每一节点负责更新主副本的ai基数估计器，然后将其扩散给其他节点的从副本(有一致性问题吗，分布式机器学习是什么样的？)。3月更新 : 在分布式数据库中最后可能会会出现的情况是各节点依据相关性在逻辑上被划分成不同的集合，各集合负责维护的学习型基数估计器不同，集合内可能相同。   
 2.2  
 分析 : 如果要给所有节点同步模型，传输模型过程中的开销怎么计算？  
 结论 :  
@@ -15,7 +15,7 @@
 2.3  
 分析 : AI基数估计器只在一个主节点上，直接根据这个AI基数估计器估计分布到各个节点的子查询对应的基数，然后确定查询策略？(优势是更少的通讯代价？)  
 结论 :  
-似乎可以使用基于查询驱动的AI基数估计器实现？  
+似乎可以使用基于查询驱动的AI基数估计器实现？3月更新 : 在各节点上，query-driven模型下的学习型基数估计器如何解决各种划分带来的问题？data-driven的模型似乎更适合分布式数据库？    
 2.4  
 分析 : 如何处理站点依赖？  
 2.5  
@@ -25,7 +25,7 @@
 2.7  
 分析 : Naru中为了计算范围查询采用采样的方式，为什么不用概率密度函数+积分? Naru的渐进式采样是在生成的Naru模型基础上根据Naru模型给出的条件概率分布进行采样的。渐进式采样只能串行执行？  
 结论 :  
-采样时使用多维直方图来代替会有多大影响？能否融合负采样？更新 : ***Naru使用自回归模型作为基础，自回归模型根据输入，输出一个由条件概率组成的序列，可以直接计算出点查询的概率(所以不能使用概率密度函数+积分的方法计算概率)。对于范围查询，如果是小的范围查询，查询范围内的所有点查询的概率之和就是这个范围查询的概率，但如果是较大的范围查询，因为无法继续这样容易的计算出所有范围内的点查询，因此一般使用蒙特卡罗法计算范围查询的概率。一般的蒙特卡洛法直接使用均匀采样，但存在误差，为了无偏采样，Naru使用渐进式采样是为了计算范围查询的概率。渐进式采样是一种使用S次采样估计查询范围R1 × · · · × Rn的密度的方法。*** Progressive sampling bears connections to sampling algorithms in graphical models. Notice that the autoregressive factorization corresponds to a complex graphical model where each node i has all nodes with indices < i as its parents. In this interpretation, progressive sampling extends the forward sampling with likelihood weighting algorithm [23] to allow variables taking on ranges of values (the former, in its default form, allows equality predicates only).原文中这一段还需要继续理解理解。  
+采样时使用多维直方图来代替会有多大影响？能否融合负采样？3月更新 : ***Naru使用自回归模型作为基础，自回归模型根据输入，输出一个由条件概率组成的序列，可以直接计算出点查询的概率(所以不能使用概率密度函数+积分的方法计算概率)。对于范围查询，如果是小的范围查询，查询范围内的所有点查询的概率之和就是这个范围查询的概率，但如果是较大的范围查询，因为无法继续这样容易的计算出所有范围内的点查询，因此一般使用蒙特卡罗法计算范围查询的概率。一般的蒙特卡洛法直接使用均匀采样，但存在误差，为了无偏采样，Naru使用渐进式采样是为了计算范围查询的概率。渐进式采样是一种使用S次采样估计查询范围R1 × · · · × Rn的密度的方法。*** Progressive sampling bears connections to sampling algorithms in graphical models. Notice that the autoregressive factorization corresponds to a complex graphical model where each node i has all nodes with indices < i as its parents. In this interpretation, progressive sampling extends the forward sampling with likelihood weighting algorithm [23] to allow variables taking on ranges of values (the former, in its default form, allows equality predicates only).原文中这一段还需要继续理解理解。  
 
 ***  
 ↑  2月  ↑  
@@ -38,7 +38,9 @@
 2.10  
 ~~分析 : 黎曼积分与勒贝格积分，定义域和值域，数据和分布，查询和基数。~~并没什么意义。  
 2.11  
-分析 : 不同属性之间的数据可能不互相独立也不同分布，按行采样和按列采样有不同的意义。基于数据的方法都是按列采样的吗。  
+分析 : 不同属性之间的数据可能不互相独立也不同分布，按行采样和按列采样有不同的意义。基于数据的方法都是按列采样的吗。 
+结论 :   
+Naru在训练的过程中是按行采样的(保持了属性之间的相关性？但对每个属性独自的数据分布会有影响吗？***尝试按块采样？有相关论文吗***)，但进行推理时似乎是按列采样？(因为是渐进式采样，需要补充论文原文作为依据)  
 2.12  
 分析 : 现有学习型基数估计器能否和数据分布到某一节点的函数相结合？分布式的学习型基数估计器在构造时应该考虑这一点。  
 2.13  
@@ -50,9 +52,11 @@
 分析 : 直方图法在的join条件下的估计过程。  
 结论 : 在[3.6.1.2 Refinements: Relative Effectiveness of Histograms](https://dsf.berkeley.edu/cs286/papers/synopses-fntdb2012.pdf)  
 2.16  
-分析 : [贝叶斯优化不需要求导数。](https://zhuanlan.zhihu.com/p/76269142)训练过程中求导数的重要性可以参照UAE模型的论文。    
+分析 : [贝叶斯优化不需要求导数。](https://zhuanlan.zhihu.com/p/76269142)训练过程中求导数的重要性可以参照UAE模型的论文。主要问题是在一个节点集合内(已经不适用独立性假设)的学习型基数估计器的损失函数可能不可导(毕竟各节点的种类不同，有些属性相同，有些不同。需要数学证明？)，此时使用这种优化方法？    
 2.17  
-分析 : 模型融合。Stacking可以与无监督学习方法结合，案例可参考Kaggle的“Otto Group Product Classification Challenge”中，Mike Kim提出的方法 [6]。  根据new bing的回答贝叶斯深度学习和meta learning相结合的例子有bayesian meta-learning for the few-shot setting via deep kernels, bayesian model-agnostic meta-learning, pac-bayesian meta-learning: from theory to practice  
+分析 : 使用模型融合的方式来得到最后的模型？Stacking可以与无监督学习方法结合，案例可参考Kaggle的“Otto Group Product Classification Challenge”中，Mike Kim提出的方法 [6]。  
+结论 :   
+根据new bing的回答贝叶斯深度学习和meta learning相结合的例子有bayesian meta-learning for the few-shot setting via deep kernels, bayesian model-agnostic meta-learning, pac-bayesian meta-learning: from theory to practice. 参考这些方法构造模型？  
 2.18  
 分析 : FLAT在处理多表连接时没有使用全外连接的方式，而是局部连接的一种树结构，可以参考。  
 2.19  
