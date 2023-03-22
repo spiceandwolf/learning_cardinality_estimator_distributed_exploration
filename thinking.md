@@ -38,23 +38,25 @@
 2.10  
 ~~分析 : 黎曼积分与勒贝格积分，定义域和值域，数据和分布，查询和基数。~~并没什么意义。  
 2.11  
-分析 : 不同属性之间的数据可能不互相独立也不同分布，按行采样和按列采样有不同的意义。基于数据的方法都是按列采样的吗。 
+分析 : 不同属性之间的数据可能不互相独立也不同分布，按行采样和按列采样有不同的意义。基于数据的方法都是按列采样的吗。不同节点间数据采样时算如何做到同分布？迁移学习？ 
 结论 :   
-Naru在训练的过程中是按行采样的(保持了属性之间的相关性？但对每个属性独自的数据分布会有影响吗？***尝试按块采样？有相关论文吗***)，但进行推理时似乎是按列采样？(因为是渐进式采样，需要补充论文原文作为依据)  
+Naru在训练的过程中是按行采样的(保持了属性之间的相关性？但对每个属性独自的数据分布会有影响吗？***尝试按块采样？有相关论文吗***)，但进行推理时似乎是按列采样？(因为是渐进式采样，需要补充论文原文作为依据。依据 : Intuitively, a sample of the first dimension $x_1^{(i)}$ would allow us to “zoom in” into the more meaningful region of the second dimension.)。***在某一个数据库确定的一个表(无论该表是原始完整的还是部分的还是join得到的)中采样时，每次采样都是独立的，样本都是来自于表中的数据，服从同一种联合分布，所以可以说样本是iid的；但如果是在不同的表上采样，能说明样本是同分布的吗？这种情况只能应用到切比雪夫大数定律的程度，此时中心极限定理只能应用林德伯格中心极限定理及李雅普诺夫Lyapunov中心极限定理，其中后者的应用场景最常用。参考(zhihu:概率论——大数定律与中心极限定理)[https://zhuanlan.zhihu.com/p/259280292?utm_source=wechat_session]。***  
 2.12  
 分析 : 现有学习型基数估计器能否和数据分布到某一节点的函数相结合？分布式的学习型基数估计器在构造时应该考虑这一点。  
 2.13  
 分析 : 幂律分布。“DeepWalk中如果图符合幂律分布的话，就可以用NLP的方法做了，论文是用的Word2vec”，数据库中数据的分布会符合幂律分布吗。  
 2.14   
 分析 : 在[OB4.0的分布式查询优化相关资料](https://zhuanlan.zhihu.com/p/586113453)中有提到 : ***分布式查询优化一定要使用一阶段的方法，即要同时枚举本地算法和分布式算法并且使用分布式代价模型来计算代价，而不是通过分阶段的方式来枚举本地算法和分布式算法。  在各节点中的传统基数估计器都是“全局相同结构的”，因为在连接时从其他节点上拉取数据的schema很有可能和本地的schema不同，所以各节点应知晓数据库中所有schema的全貌。因此，与之相对应的，现有的学习型基数估计方法要是想应用于分布式数据库，各个节点中持有的学习型基数估计模型在训练时也必须是涵盖所有schema。***  ~~半连接优化 : 只需要各节点自己的基数估计器。 直接连接优化 : ~~  
-结论 : 能否说现有的学习型基数估计器无法适配分布式数据库？query/data-driven的基数估计器都会因为水平划分造成的不同节点上复数个同构子schema而不能正常工作，因为它们可能在这些场地上产生相似的结果(受困于当前学习型基数估计器的实现，有些学习型基数估计器在估计同一查询时的结果可能不唯一)，另外在训练模型时，特别是data-driven的，受到水平划分的影响，只能得到所属节点自身的数据模型，没法直接用于正常的基数估计？；应在模型中引入分区信息，降低受到水平划分的影响。能否实现不依赖于schema全貌的学习型基数估计，每个节点的学习型基数估计只需专注自己的schema，但有来自其他场地连接操作时只需要把其他场地的模型拼在一起就能继续正常估计？  
+结论 :   
+能否说现有的学习型基数估计器无法适配分布式数据库？query/data-driven的基数估计器都会因为水平划分造成的不同节点上复数个同构子schema而不能正常工作，因为它们可能在这些场地上产生相似的结果(受困于当前学习型基数估计器的实现，有些学习型基数估计器在估计同一查询时的结果可能不唯一)，另外在训练模型时，特别是data-driven的，受到水平划分的影响，只能得到所属节点自身的数据模型，没法直接用于正常的基数估计？；应在模型中引入分区信息，降低受到水平划分的影响。能否实现不依赖于schema全貌的学习型基数估计，每个节点的学习型基数估计只需专注自己的schema，但有来自其他场地连接操作时只需要把其他场地的模型拼在一起就能继续正常估计？  
 2.15  
 分析 : 直方图法在的join条件下的估计过程。  
-结论 : 在[3.6.1.2 Refinements: Relative Effectiveness of Histograms](https://dsf.berkeley.edu/cs286/papers/synopses-fntdb2012.pdf)  
+结论 :   
+在[3.6.1.2 Refinements: Relative Effectiveness of Histograms](https://dsf.berkeley.edu/cs286/papers/synopses-fntdb2012.pdf)  
 2.16  
 分析 : [贝叶斯优化不需要求导数。](https://zhuanlan.zhihu.com/p/76269142)训练过程中求导数的重要性可以参照UAE模型的论文。主要问题是在一个节点集合内(已经不适用独立性假设)的学习型基数估计器的损失函数可能不可导(毕竟各节点的种类不同，有些属性相同，有些不同。需要数学证明？)，此时使用这种优化方法？    
 2.17  
-分析 : 使用模型融合的方式来得到最后的模型？Stacking可以与无监督学习方法结合，案例可参考Kaggle的“Otto Group Product Classification Challenge”中，Mike Kim提出的方法 [6]。  
+分析 : 使用模型融合的方式来得到最后的模型？Stacking可以与无监督学习方法结合，案例可参考Kaggle的“Otto Group Product Classification Challenge”中，Mike Kim提出的方法 [6]。(高斯过程和meta-learning结合)[https://zhuanlan.zhihu.com/p/146818995], 各表间分布十分近似的就可以认为是同分布的，可以一起处理。  
 结论 :   
 根据new bing的回答贝叶斯深度学习和meta learning相结合的例子有bayesian meta-learning for the few-shot setting via deep kernels, bayesian model-agnostic meta-learning, pac-bayesian meta-learning: from theory to practice. 参考这些方法构造模型？  
 2.18  
@@ -63,6 +65,11 @@ Naru在训练的过程中是按行采样的(保持了属性之间的相关性？
 分析 : localnn模型的效果和MSCN模型的效果差不多([见Learned Cardinality Estimation : A Design Space Exploration and a Comparative Evaluation](http://dbgroup.cs.tsinghua.edu.cn/ligl/papers/vldb22-card-exp.pdf))，但为什么基本没有后续研究。  
 2.20  
 分析 : 分布式查询下学习型基数估计器对半连接算法的影响？半连接(semi-join)是对全连接结果属性列的一种缩减操作,它由投影和连接操作导出,投影操作实现连接属性基数的缩减,连接操作实现左连接关系元组数的缩减。  
-结论 : ***在分布式数据库中的查询优化，需要估算查询造成的多表连接的基数。更准确的基数估计主要是影响半连接算法的准确度，不影响算法本身？***解决了问题2.0？  
+结论 :   
+***在分布式数据库中的查询优化，需要估算查询造成的多表连接的基数。更准确的基数估计主要是影响半连接算法的准确度，不影响算法本身？***解决了问题2.0？  
 2.21  
-分析 : PRMs, probabilitistic relational models, 概率关系模型。一个PRM包含了schema全部内容的模型 : NeuroCard; 多个PRMs包含了schema全部内容的模型 : FLAT，BayesCard
+分析 : PRMs, probabilitistic relational models, 概率关系模型。一个PRM包含了schema全部内容的模型 : NeuroCard; 多个PRMs包含了schema全部内容的模型 : FLAT, BayesCard, Deepdb
+结论 :    
+根据综述[Cardinality Estimation in DBMS: A Comprehensive Benchmark Evaluation](https://arxiv.org/pdf/2109.05877.pdf), 多个PRMs构成的模型的泛化能力更强，尤其是在涉及属性的数量越多，数据偏斜越严重的复杂数据集上(真实世界中的数据也有这样的特点)。  
+2.22  
+分析 : 根据综述[Cardinality Estimation in DBMS: A Comprehensive Benchmark Evaluation](https://arxiv.org/pdf/2109.05877.pdf)，q-error不能完全刻画基数估计器在正确率上的特点，越大的基数在查询优化方面会造成的影响越大，所以准确估计大基数的重要性比准确估计小基数大重要性要高。***因此损失函数应该能反映这个特点！***
