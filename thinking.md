@@ -15,7 +15,7 @@
 2.3  
 分析 : AI基数估计器只在一个主节点上，直接根据这个AI基数估计器估计分布到各个节点的子查询对应的基数，然后确定查询策略？(优势是更少的通讯代价？)  
 结论 :  
-似乎可以使用基于查询驱动的AI基数估计器实现？3月更新 : 在各节点上，query-driven模型下的学习型基数估计器如何解决各种划分带来的问题？data-driven的模型似乎更适合分布式数据库？    
+似乎可以使用基于查询驱动的AI基数估计器实现？3月更新 : 在各节点上，query-driven模型下的学习型基数估计器如何解决各种划分带来的问题？data-driven的模型似乎更适合分布式数据库？***当前有query-driven模型是基于query plan的，或许可以训练这种的query-driven模型？***    
 2.4  
 分析 : 如何处理站点依赖？  
 2.5  
@@ -66,10 +66,31 @@ Naru在训练的过程中是按行采样的(保持了属性之间的相关性？
 2.20  
 分析 : 分布式查询下学习型基数估计器对半连接算法的影响？半连接(semi-join)是对全连接结果属性列的一种缩减操作,它由投影和连接操作导出,投影操作实现连接属性基数的缩减,连接操作实现左连接关系元组数的缩减。  
 结论 :   
-***在分布式数据库中的查询优化，需要估算查询造成的多表连接的基数。更准确的基数估计主要是影响半连接算法的准确度，不影响算法本身？***解决了问题2.0？  
+***在分布式数据库中的查询优化，需要估算查询造成的多表连接的基数。更准确的基数估计主要是影响半连接算法的准确度，不影响算法本身？***解决了问题2.0？基数估计在物理操作符(hash join/index scan)被选中前执行。  
 2.21  
 分析 : PRMs, probabilitistic relational models, 概率关系模型。一个PRM包含了schema全部内容的模型 : NeuroCard; 多个PRMs包含了schema全部内容的模型 : FLAT, BayesCard, Deepdb
 结论 :    
-根据综述[Cardinality Estimation in DBMS: A Comprehensive Benchmark Evaluation](https://arxiv.org/pdf/2109.05877.pdf), 多个PRMs构成的模型的泛化能力更强，尤其是在涉及属性的数量越多，数据偏斜越严重的复杂数据集上(真实世界中的数据也有这样的特点)。  
+根据综述[Cardinality Estimation in DBMS: A Comprehensive Benchmark Evaluation](https://arxiv.org/pdf/2109.05877.pdf), 多个PRMs构成的模型的泛化能力更强，尤其是在涉及属性的数量越多，数据偏斜越严重的复杂数据集上(真实世界中的数据也有这样的特点)。在FACE模型的论文中比较了FACE模型分别采用这两种方式的q-error和模型尺寸，结果显示还是多个PRMs更站优势。  
 2.22  
-分析 : 根据综述[Cardinality Estimation in DBMS: A Comprehensive Benchmark Evaluation](https://arxiv.org/pdf/2109.05877.pdf)，q-error不能完全刻画基数估计器在正确率上的特点，越大的基数在查询优化方面会造成的影响越大，所以准确估计大基数的重要性比准确估计小基数大重要性要高。***因此损失函数应该能反映这个特点！***
+分析 : 根据综述[Cardinality Estimation in DBMS: A Comprehensive Benchmark Evaluation](https://arxiv.org/pdf/2109.05877.pdf)，q-error不能完全刻画基数估计器在正确率上的特点，越大的基数在查询优化方面会造成的影响越大，所以准确估计大基数的重要性比准确估计小基数大重要性要高。***因此损失函数应该能反映这个特点！***  
+2.23  
+分析 : ***在分布式上做文章，不要太在意单个节点的估计准确率！***   
+2.24  
+分析 : deepdb默认在2kw条数据下建模，如果超出了直接采样2kw。  
+2.25  
+分析 : face的可调整重要度采样似乎是根据分布进行采样的，在推理阶段使用，用于蒙特卡洛过程。在训练阶段，face为了处理离散变量用于训练将其进行去量化处理，其过程是使用三次样条插值将其累计分布函数CDF构造成连续可导的，然后在离散值对应的整数内抽样求概率。概率带入CDF的反函数得到的值就是去量化后的值。推理时不用去量化分布进行基数估计的原因是所用的去量化分布都是边缘分布，估计时所需要的是联合分布。***去量化的目的是因为离散变量的概率密度函数用正则流拟合得到的函数特点很差，概率基本集中在离散点取值的周围，并且难以求积分。*** ***直接把这个方法应用在直方图上也行？*** 在提取单表中每列之间的相关性时，FACE模型采用的是一个叫coupling层的结构，但这个结构是正则流模型中需要训练的部分。  
+2.26  
+分析 : 关于VAE模型，在原始空间中的概率是否也等于在隐空间的概率，能不能通过在隐空间求概率来得到原始空间的概率。  
+2.27  
+分析 : 可以在自回归模型中引入分布增强，提升模型能力，缩小模型的大小。  
+
+***  
+↑  3月  ↑  
+***  
+  
+2.28  
+分析 : Skimmed Sketches. The skimmed sketch technique [102] observes that much of the error in join size estimation using sketches arises from collisions with high frequencies. Instead, Ganguly et al. propose “skimming” off the high frequency items from each relation by extracting the (approximate) heavy hitters, so each relation is broken into a “low” and a “high” relation. The join can now be broken into four pieces, each of which can be estimated from either the estimated heavy hitters, or from sketches after the contributions of the sketches have been subtracted off. These four pieces can be thought of as (a) highhigh (product of frequencies of items which are heavy hitters in both relations) (b) low-low (inner product estimation from the skimmed sketches) and (c) high-low and low-high (product of heavy hitter items with corresponding items from the other sketch). This is shown to be an improvement over the original scheme based on averaging multiple estimates together (Section 5.3.3.1). However, it is unclear whether there is a significant gain over the hashing version of AMS sketches where the hashing randomly separates the heavy hitters with high probability.   
+Using the Count-Min sketch to estimate inner products.  
+Using the AMS Sketch to estimate inner products.   
+以上大部分属于[Synopses for Massive Data: Samples, Histograms, Wavelets, Sketches](https://dsf.berkeley.edu/cs286/papers/synopses-fntdb2012.pdf)5.3.4.2章的内容。使用各种sketck进行join size的估计都是用各种sketch对查询涉及的数据频率建模，相同数据间的相乘后再把查询范围内的对应乘积相加。factorJoin也是差不多的思路，使用分桶的方式进行建模。  
+对join size的估计方法可以分成2大类，分别是基于直方图(指多维直方图，sketches和wavelets)的和基于采样的，用机器学习来解决join size估计问题可能更应该从基于直方图的方向去考虑。
