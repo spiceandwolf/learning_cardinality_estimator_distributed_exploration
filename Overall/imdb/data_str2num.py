@@ -52,4 +52,4 @@ for i in tqdm(range(len(df['imdb_index']))):
     if (pd.notnull(df['imdb_index'][i])):
         df['imdb_index'][i] = res[df['imdb_index'][i]]
 
-df.to_csv("../train-test-data/imdbdataset-num/title.csv", header=False, index=False)
+df.to_csv("../train-test-data/imdbdata-num/no_head/title.csv", header=False, index=False)

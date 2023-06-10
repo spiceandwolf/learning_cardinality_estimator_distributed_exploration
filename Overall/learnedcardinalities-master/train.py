@@ -30,7 +30,7 @@ print(args.queries, args.epochs, args.batch, args.hid, args.cuda, args.train, ar
 min_max_file = args.min_max_file
 
 
-# fmetric = open('/home/zhangjintao/Benchmark3/metric_result/' + args.version + '.mscn.txt', 'a')
+fmetric = open('./metric_result/imdb/col_2_result.txt', 'a')
 
 
 def unnormalize_torch(vals, min_val, max_val):
@@ -86,9 +86,9 @@ def print_qerror(preds_unnorm, labels_unnorm):
         else:
             qerror.append(float(labels_unnorm[i]) / float(preds_unnorm[i]))
 
-    '''fmetric.write("Median: {}".format(np.median(qerror))+ '\n'+ "90th percentile: {}".format(np.percentile(qerror, 90))+ '\n'+ "95th percentile: {}".format(np.percentile(qerror, 95))+\
+    fmetric.write("Median: {}".format(np.median(qerror))+ '\n'+ "90th percentile: {}".format(np.percentile(qerror, 90))+ '\n'+ "95th percentile: {}".format(np.percentile(qerror, 95))+\
             '\n'+ "99th percentile: {}".format(np.percentile(qerror, 99))+ '\n'+ "99th percentile: {}".format(np.percentile(qerror, 99))+ '\n'+ "Max: {}".format(np.max(qerror))+ '\n'+\
-            "Mean: {}".format(np.mean(qerror))+ '\n')'''
+            "Mean: {}".format(np.mean(qerror))+ '\n')
 
     print("Median: {}".format(np.median(qerror)))
     print("90th percentile: {}".format(np.percentile(qerror, 90)))
@@ -130,7 +130,7 @@ def train_and_predict(train_file, test_file, num_queries, num_epochs, batch_size
 
     if need_train:
         # Train model
-
+        
         model = SetConv(sample_feats, predicate_feats, join_feats, hid_units)
 
         optimizer = torch.optim.Adam(model.parameters(), lr=0.001)

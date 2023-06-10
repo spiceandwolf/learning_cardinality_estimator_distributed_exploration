@@ -1,0 +1,9 @@
+name,min,max,cardinality,num_unique_values
+t.kind_id,1.0,2010.0,2528312,7
+t.production_year,1880.0,2019.0,2528312,133
+ci.nr_order,0.0,1115798165.0,36244344,1095
+ci.role_id,1.0,11.0,36244344,11
+t.series_years,1.0,1408.0,2528312,1409
+t.episode_nr,1.0,91821.0,2528312,14907
+mi.info_type_id,1.0,110.0,14835710,71
+t.phonetic_code,1.0,23259.0,2528312,23260

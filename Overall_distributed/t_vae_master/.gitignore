@@ -1,4 +1,3 @@
-### Python template
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -21,6 +20,7 @@ parts/
 sdist/
 var/
 wheels/
+pip-wheel-metadata/
 share/python-wheels/
 *.egg-info/
 .installed.cfg
@@ -50,7 +50,6 @@ coverage.xml
 *.py,cover
 .hypothesis/
 .pytest_cache/
-cover/
 
 # Translations
 *.mo
@@ -73,7 +72,6 @@ instance/
 docs/_build/
 
 # PyBuilder
-.pybuilder/
 target/
 
 # Jupyter Notebook
@@ -84,9 +82,7 @@ profile_default/
 ipython_config.py
 
 # pyenv
-#   For a library or package, you might want to ignore these files since the code is
-#   intended to run in multiple environments; otherwise, check them in:
-# .python-version
+.python-version
 
 # pipenv
 #   According to pypa/pipenv#598, it is recommended to include Pipfile.lock in version control.
@@ -132,18 +128,17 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-# pytype static type analyzer
-.pytype/
+# Project Settings
+.DS_Store
+.idea/
+datasets/
+npy/
+save/
 
-# Cython debug symbols
-cython_debug/
-
-# ai4db
-Overall/train-test-data/
-.idea
-*/logs
-Synthetic/csvdata_sql/*
-Synthetic_distributed/nodes/
-Overall/deepdb/deepdb-imdb/imdb-benchmark/
-Overall_distributed/save/
-Synthetic/sql_truecard
+# Dataset Settings
+*.amat
+*.data
+*.gz
+*.mat
+*.npy
+*.pkl

@@ -1,0 +1,13 @@
+Training Time: 77.10250186920166s
+Prediction time per test sample: 0.00947880744934082ms
+Median: 1.2857142857142858
+90th percentile: 2.3068127019955886
+95th percentile: 3.0
+99th percentile: 6.927801268498938
+99th percentile: 6.927801268498938
+Max: 92.0
+Mean: 1.705603797476781
+MSE: 574040.181
+MAPE: 46.011973191706275
+Pearson Correlation: PearsonRResult(statistic=0.9958979874073028, pvalue=0.0)
+

@@ -93,4 +93,15 @@ Naru在训练的过程中是按行采样的(保持了属性之间的相关性？
 Using the Count-Min sketch to estimate inner products.  
 Using the AMS Sketch to estimate inner products.   
 以上大部分属于[Synopses for Massive Data: Samples, Histograms, Wavelets, Sketches](https://dsf.berkeley.edu/cs286/papers/synopses-fntdb2012.pdf)5.3.4.2章的内容。使用各种sketck进行join size的估计都是用各种sketch对查询涉及的数据频率建模，相同数据间的相乘后再把查询范围内的对应乘积相加。factorJoin也是差不多的思路，使用分桶的方式进行建模。  
-对join size的估计方法可以分成2大类，分别是基于直方图(指多维直方图，sketches和wavelets)的和基于采样的，用机器学习来解决join size估计问题可能更应该从基于直方图的方向去考虑。
+对join size的估计方法可以分成2大类，分别是基于直方图(指多维直方图，sketches和wavelets)的和基于采样的，用机器学习来解决join size估计问题可能更应该从基于直方图的方向去考虑。  
+
+2.29   
+分析 : 想提出一种神经网络混合高斯，权重，均值，方差由神经网络去调整。 EM距离  
+2.30  
+分析 : Copula函数。Copula函数表示了多变量之间全部的关联关系，且与单个变量的性质是无关的。Sklar认为，对于N个随机变量的联合分布，可以将其分解为这N个变量各自的边缘分布和一个Copula函数，从而将变量的随机性和耦合性分离开来。其中，随机变量各自的随机性由边缘分布进行描述，随机变量之间的耦合特性由Copula函数进行描述。换句话说，一个联合分布关于相关性的性质，完全由其Copula函数决定。  
+2.31  
+分析 : 当引入潜变量来解决复杂分布问题的情况下，参数估计算法主要有三种：EM算法，VI(变分推理)，MCMC；其中EM算法属于点估计，VI是将参数作为分布来求解，MCMC是对后验分布直接做采样估计参数。极大似然估计/EM算法/变分推断的关系为 : 变分推断可作为EM算法的E-step；极大似然估计是EM算法的M-step；EM算法解决变量中存在未观测变量情况下的参数估计问题（即，概率模型的推断问题）。  
+2.32  
+分析 : 按照《Variational Deep Embedding:An Unsupervised and Generative Approach to Clustering》将VAE潜变量假设为混合高斯  
+2.33  
+分析 : 《deep dirichlet process mixture models》的源码中有狄利克雷过程混合模型的实现？这篇论文先用NICE提取数据特征，然后在数据空间中使用狄利克雷过程混合模型解决分类问题，em算法求解参数，采样使用的是吉布斯采样。《student-t variational autoencoder for robust density estimation》为了提升估计结果的稳定性，将decoder的先验改为student-t分布。

@@ -93,9 +93,9 @@ def example():
     plt.xticks(range(4), ['0','500','1000','2000'])
     plt.yticks(np.linspace(280000, 1000000, 5))
     # y轴按指数显示
-    # axs.set_ylim(0.4, 100) # bottom直接赋0会显示错误，这种情况中赋0.4可以显示原点
-    # axs.set_yscale('log')
-    # axs.yaxis.set_major_locator(ticker.LogLocator(base=10, numticks=15))
+    axs.set_ylim(0.4, 100) # bottom直接赋0会显示错误，这种情况中赋0.4可以显示原点
+    axs.set_yscale('log')
+    axs.yaxis.set_major_locator(ticker.LogLocator(base=10, numticks=15))
 
     plt.xlabel("Concurrency")
     plt.ylabel("Latency (ms)")
