@@ -29,3 +29,26 @@ def LoadDmv(filename='low.csv'):  # modify
     type_casts = {'Reg Valid Date': np.datetime64}
     # ptint('csvfile',csv_file)
     return common.CsvTable('DMV', csv_file, cols, type_casts)
+
+def LoadPower(filename='low.csv'):  # modify
+    csv_file = '../train-test-data/forest_power-data-sql/{}'.format(filename)
+    table_head = pd.read_csv(csv_file, sep=';', escapechar='\\', encoding='utf-8', low_memory=False, quotechar='"', header=0)
+    cols = ['Global_active_power','Global_reactive_power','Voltage','Global_intensity','Sub_metering_1','Sub_metering_2','Sub_metering_3']
+    # Note: other columns are converted to objects/strings automatically.  We
+    # don't need to specify a type-cast for those because the desired order
+    # there is the same as the default str-ordering (lexicographical).
+
+    # ptint('csvfile',csv_file)
+    return common.CsvTable('power', csv_file, cols, sep=';')
+
+def LoadDistributedPower(filename='low.csv'):  # modify
+    csv_file = '../../Overall_distributed/data/power_3_partition/{}'.format(filename)
+    table_head = pd.read_csv(csv_file, sep=',', escapechar='\\', encoding='utf-8', low_memory=False, quotechar='"', 
+                             names=['Date','Time','Global_active_power','Global_reactive_power','Voltage','Global_intensity','Sub_metering_1','Sub_metering_2','Sub_metering_3'])
+    cols = ['Global_active_power','Global_reactive_power','Voltage','Global_intensity','Sub_metering_1','Sub_metering_2','Sub_metering_3']
+    # Note: other columns are converted to objects/strings automatically.  We
+    # don't need to specify a type-cast for those because the desired order
+    # there is the same as the default str-ordering (lexicographical).
+
+    # ptint('csvfile',csv_file)
+    return common.CsvTable('power', csv_file, cols, names=table_head.columns)

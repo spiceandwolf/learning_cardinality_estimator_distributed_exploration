@@ -147,32 +147,32 @@ def parse_query(query_str, schema):
         [token for token in where_statements if token.normalized == 'OR']) == 0, "OR statements currently unsupported."
 
     # Parse where statements
-
+    '''
     # 暂且还不研究in语法
     # parse multiple values differently because sqlparse does not parse as comparison
-    # in_statements = [idx for idx, token in enumerate(where_statements) if token.normalized == 'IN']
-    # for in_idx in in_statements:
-    #     assert where_statements.tokens[in_idx - 1].value == ' '
-    #     assert where_statements.tokens[in_idx + 1].value == ' '
-    #     # ('bananas', 'apples')
-    #     possible_values = where_statements.tokens[in_idx + 2]
-    #     assert isinstance(possible_values, sqlparse.sql.Parenthesis)
-    #     # fruits
-    #     identifier = where_statements.tokens[in_idx - 2]
-    #     assert isinstance(identifier, sqlparse.sql.Identifier)
+    in_statements = [idx for idx, token in enumerate(where_statements) if token.normalized == 'IN']
+    for in_idx in in_statements:
+        assert where_statements.tokens[in_idx - 1].value == ' '
+        assert where_statements.tokens[in_idx + 1].value == ' '
+        # ('bananas', 'apples')
+        possible_values = where_statements.tokens[in_idx + 2]
+        assert isinstance(possible_values, sqlparse.sql.Parenthesis)
+        # fruits
+        identifier = where_statements.tokens[in_idx - 2]
+        assert isinstance(identifier, sqlparse.sql.Identifier)
 
-    #     if len(identifier.tokens) == 1:
+        if len(identifier.tokens) == 1:
 
-    #         left_table_name, left_attribute = _fully_qualified_attribute_name(identifier, schema, alias_dict,
-    #                                                                           return_split=True)
-    #         query.add_where_condition(left_table_name, left_attribute + ' IN ' + possible_values.value)
+            left_table_name, left_attribute = _fully_qualified_attribute_name(identifier, schema, alias_dict,
+                                                                              return_split=True)
+            query.add_where_condition(left_table_name, left_attribute + ' IN ' + possible_values.value)
 
-    #     else:
-    #         assert identifier.tokens[1].value == '.', "Invalid identifier."
-    #         # Replace alias by full table names
-    #         query.add_where_condition(alias_dict[identifier.tokens[0].value],
-    #                                   identifier.tokens[2].value + ' IN ' + possible_values.value)
-    
+        else:
+            assert identifier.tokens[1].value == '.', "Invalid identifier."
+            # Replace alias by full table names
+            query.add_where_condition(alias_dict[identifier.tokens[0].value],
+                                      identifier.tokens[2].value + ' IN ' + possible_values.value)
+    '''
     # normal comparisons
     comparisons = [token for token in where_statements if isinstance(token, sqlparse.sql.Comparison)]
     
@@ -238,20 +238,6 @@ def parse_query(query_str, schema):
           query.aggregation_operations, query.group_bys)  # 重要
     return query
 
-def normalize_labels(labels, min_val=None, max_val=None):
-    labels = np.array([np.log(float(l)) for l in labels])
-    if min_val is None:
-        min_val = labels.min()
-        print("min log(label): {}".format(min_val))
-    if max_val is None:
-        max_val = labels.max()
-        print("max log(label): {}".format(max_val))
-    labels_norm = (labels - min_val) / (max_val - min_val)
-    # Threshold labels
-    labels_norm = np.minimum(labels_norm, 1)
-    labels_norm = np.maximum(labels_norm, 0)
-    return labels_norm, min_val, max_val
-
 def chunks(l, n):
     """Yield successive n-sized chunks from l."""
     for i in range(0, len(l), n):
@@ -278,6 +264,20 @@ def load_data(file_name):
     # Split predicates
     predicates = [list(chunks(d, 3)) for d in predicates]
     return joins, predicates, tables, label
+
+def normalize_labels(labels, min_val=None, max_val=None):
+    labels = np.array([np.log(float(l)) for l in labels])
+    if min_val is None:
+        min_val = labels.min()
+        print("min log(label): {}".format(min_val))
+    if max_val is None:
+        max_val = labels.max()
+        print("max log(label): {}".format(max_val))
+    labels_norm = (labels - min_val) / (max_val - min_val)
+    # Threshold labels
+    labels_norm = np.minimum(labels_norm, 1)
+    labels_norm = np.maximum(labels_norm, 0)
+    return labels_norm, min_val, max_val
 
 def unnormalize_labels(labels_norm, min_val, max_val):
     labels_norm = np.array(labels_norm, dtype=np.float32)
@@ -368,3 +368,39 @@ def get_column_min_max_vals(file_name_column_min_max_vals):
             
     return column_min_max_vals
 
+def parse_conditions(conditions, left_bounds, right_bounds, bins):
+    print('conditions:\n', conditions)
+    for condition in conditions:
+        if '=' in condition:
+            attr, literal = condition.split('=', 1)
+            literal = float(literal.strip())
+            if literal >= left_bounds[attr] and literal <= right_bounds[attr]:
+                left_bounds[attr] = literal - bins[attr]
+                right_bounds[attr] = literal + bins[attr]
+            else:
+                left_bounds[attr] = literal
+                right_bounds[attr] = literal
+                
+        elif '<=' in condition:
+            attr, literal = condition.split('<=', 1)
+            literal = float(literal.strip())
+            right_bounds[attr] = literal + bins[attr]
+        
+        elif '<' in condition:
+            attr, literal = condition.split('<', 1)
+            right_bounds[attr] = literal
+            
+        elif '>=' in condition:
+            attr, literal = condition.split('>=', 1)
+            literal = float(literal.strip())
+            left_bounds[attr] = literal - bins[attr]
+            
+        elif '>' in condition:
+            attr, literal = condition.split('>=', 1)
+            literal = float(literal.strip())
+            left_bounds[attr] = literal
+        
+        else:
+            raise ValueError("Unknown operator")
+
+    return left_bounds, right_bounds

@@ -67,7 +67,7 @@ def evaluate_cardinalities(version, ensemble_location, physical_db_name, query_f
     :return:
     """
     if true_cardinalities_path is not None:
-        df_true_card = pd.read_csv(true_cardinalities_path, sep='#')  # 真实基数
+        df_true_card = pd.read_csv(true_cardinalities_path, sep='#', header=None)  # 真实基数
     else:
         # True cardinality via DB
         db_connection = DBConnection(db=physical_db_name)
@@ -105,7 +105,7 @@ def evaluate_cardinalities(version, ensemble_location, physical_db_name, query_f
         else:
             # print('df_tcard:\n', df_true_card.loc[df_true_card['query_no'] == query_no, ['cardinality_true']].values)
             # cardinality_true = df_true_card.loc[df_true_card['query_no'] == query_no, ['cardinality_true']].values[0][0]
-            cardinality_true = df_true_card.iloc[query_no-1, -1]
+            cardinality_true = df_true_card.iloc[query_no, -1]
         # only relevant for generated code
         gen_code_stats = GenCodeStats()
 
@@ -115,6 +115,7 @@ def evaluate_cardinalities(version, ensemble_location, physical_db_name, query_f
                          merge_indicator_exp=merge_indicator_exp, max_variants=max_variants,
                          exploit_overlapping=exploit_overlapping, return_factor_values=True,
                          gen_code_stats=gen_code_stats)  # 估计
+        
         card_end_t = perf_counter()
         latency_ms = (card_end_t - card_start_t) * 1000
 
@@ -140,31 +141,5 @@ def evaluate_cardinalities(version, ensemble_location, physical_db_name, query_f
                          'latency_generated_code': gen_code_stats.total_time * 1000})
         latencies.append(latency_ms)
 
-    fmetric = open('./' + version + '.deepdb.txt', 'a')
-    mse = mean_squared_error(mee, met)
-    mee = np.array(mee)
-    met = np.array(met)
-    PCCs = sc.stats.pearsonr(mee, met)  # 皮尔逊相关系数
-    fmetric.write('PCCs:'+str(PCCs[0])+'\n')
-    print('PCCs:', PCCs[0])
-    # mse = sum(np.square(met - mee))/len(met)
-    mape = sum(np.abs((met - mee) / met)) / len(met) * 100
-    # fmetric.write('MSE: '+ str(mse)+'\n')
-    # fmetric.write('MAPE: '+ str(mape)+'\n')
-    print('MSE: ', mse)
-    print('MAPE: ', mape)
-    # print percentiles of published JOB-light
-    q_errors = np.array(q_errors)
-    q_errors.sort()
-    logger.info(f"{q_errors[-10:]}")
-    
-    for i, percentile in enumerate([50, 90, 95, 99, 100]):
-        fmetric.write(f"Q-Error {percentile}%-Percentile: {np.percentile(q_errors, percentile)}\n")
-        logger.info(f"Q-Error {percentile}%-Percentile: {np.percentile(q_errors, percentile)} ")
-    fmetric.write(f"Q-Mean wo inf {np.mean(q_errors[np.isfinite(q_errors)])}\n")
-    logger.info(f"Q-Mean wo inf {np.mean(q_errors[np.isfinite(q_errors)])} ")
-    fmetric.write(f"Latency avg: {np.mean(latencies):.2f}ms\n")
-    logger.info(f"Latency avg: {np.mean(latencies):.2f}ms")
-    fmetric.close()
     # write to csv
     save_csv(csv_rows, target_csv_path)

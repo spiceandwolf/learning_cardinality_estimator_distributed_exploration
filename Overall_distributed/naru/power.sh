@@ -1,0 +1,8 @@
+cd ../../Overall/naru
+python train_model_distributed.py --csvname power_1.csv --num-gpus=1 --dataset=power --epochs=80 --warmups=8000 --bs=2048 --residual --layers=5 --fc-hiddens=256 --direct-io --column-masking
+python train_model_distributed.py --csvname power_2.csv --num-gpus=1 --dataset=power --epochs=80 --warmups=8000 --bs=2048 --residual --layers=5 --fc-hiddens=256 --direct-io --column-masking
+python train_model_distributed.py --csvname power_3.csv --num-gpus=1 --dataset=power --epochs=80 --warmups=8000 --bs=2048 --residual --layers=5 --fc-hiddens=256 --direct-io --column-masking
+# modify modle name models/dmv-2.0MB-model5.623-data5.471-made-resmade-hidden256_256_256_256_256-emb32-directIo-binaryInone_hotOut-inputNoEmbIfLeq-colmask-20epochs-seed0.pt
+python eval_model_distributed.py --csvname power_1.csv --err_csv ../../Overall_distributed/naru/power_1.result.csv --testfilepath ../train-test-data/forest_power-data-sql/ --alias power --dataset=power --glob='<ckpt from above>' --num-queries=1000 --residual --layers=5 --fc-hiddens=256 --direct-io --column-masking
+python eval_model_distributed.py --csvname power_2.csv --err_csv ../../Overall_distributed/naru/power_2.result.csv --testfilepath ../train-test-data/forest_power-data-sql/ --alias power --dataset=power --glob='<ckpt from above>' --num-queries=1000 --residual --layers=5 --fc-hiddens=256 --direct-io --column-masking
+python eval_model_distributed.py --csvname power_3.csv --err_csv ../../Overall_distributed/naru/power_3.result.csv --testfilepath ../train-test-data/forest_power-data-sql/ --alias power --dataset=power --glob='<ckpt from above>' --num-queries=1000 --residual --layers=5 --fc-hiddens=256 --direct-io --column-masking

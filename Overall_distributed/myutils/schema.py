@@ -230,25 +230,6 @@ def gen_imdb_schema(csv_path):
 
     return schema
 
-def gen_synthetic_schema(csv_path, version):
-    """
-    从synthetic模式下生成的表中所有属性信息
-    """
-    schema = SchemaGraph()
-
-    # tables
-    tablename = version
-    attributes = []
-    col_counts = int(version[5])
-    for i in range(col_counts):
-        attributes.append('col' + str(i))
-    tablenamecsv = version + '_nohead'
-    schema.add_table(Table(tablename, attributes=attributes,
-                           csv_file_location=csv_path.format(tablenamecsv),  
-                           table_size=100000))
-
-    return schema
-
 def gen_imdb_cols2_schema(csv_path):
     """
     Just like the full IMDB schema but without tables that are not used in the job-light benchmark.

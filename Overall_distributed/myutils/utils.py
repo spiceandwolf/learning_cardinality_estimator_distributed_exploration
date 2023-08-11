@@ -17,7 +17,6 @@ def calculate_matmul_n_times(n_components, mat_a, mat_b):
     
     return res
 
-
 def calculate_matmul(mat_a, mat_b):
     """
     Calculate matrix product of two matrics with mat_a[0] >= mat_b[0].

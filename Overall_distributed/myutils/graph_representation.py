@@ -33,7 +33,6 @@ class Table:
                             fd_list]
 
         # additional attribute indicating whether tuple is NULL 
-        # 当前阶段不需要考虑
         if table_nn_attribute is None:
             self.table_nn_attribute = self.table_name + '_nn'
 
@@ -49,7 +48,6 @@ class Table:
 
     def parent_fd_attributes(self, attribute):
         return [fd_dest for fd_source, fd_dest in self.fd_list if fd_source == attribute]
-
 
 class Relationship:
     """Foreign key primary key relationship"""
@@ -73,7 +71,6 @@ class Relationship:
         # for start table we are outgoing relationship
         start.outgoing_relationships.append(self)
         end.incoming_relationships.append(self)
-
 
 class SchemaGraph:
     """Holds all tables and relationships"""
@@ -104,7 +101,6 @@ class SchemaGraph:
         self.relationship_dictionary[relationship.identifier] = relationship
         print('relationship.identifier:\n', relationship.identifier)
         return relationship.identifier
-
 
 class QueryType(Enum):
     # AQP = 0

@@ -13,7 +13,7 @@ from ensemble_creation.rdc_based import candidate_evaluation
 from evaluation.confidence_interval_evaluation import evaluate_confidence_intervals
 from rspn.code_generation.generate_code import generate_ensemble_code
 from schemas.flights.schema import gen_flights_1B_schema
-from schemas.imdb.schema import gen_job_light_imdb_schema, gen_job_ranges_imdb_schema
+from schemas.imdb.schema import gen_job_light_imdb_schema, gen_job_ranges_imdb_schema, gen_power_schema
 from schemas.ssb.schema import gen_500gb_ssb_schema
 from schemas.tpc_ds.schema import gen_1t_tpc_ds_schema
 
@@ -22,7 +22,7 @@ np.random.seed(1)
 if __name__ == '__main__':
 
     parser = argparse.ArgumentParser()
-    parser.add_argument('--dataset', default='imdb-ranges', help='Which dataset to be used')  # imdb-light
+    parser.add_argument('--dataset', default='power', help='Which dataset to be used')  # imdb-light
 
     # generate hdf
     parser.add_argument('--generate_hdf', help='Prepare hdf5 files for single tables', action='store_true')
@@ -82,7 +82,7 @@ if __name__ == '__main__':
                         default='./benchmarks/ssb/sql/cardinality_queries.sql')  # External write
     parser.add_argument('--ground_truth_file_location',
                         default='./benchmarks/ssb/sql/cardinality_true_cardinalities_100GB.csv')  # External write
-    parser.add_argument('--database_name', default='postgres')  # modified
+    parser.add_argument('--database_name', default='ai4db')  # modified
     parser.add_argument('--target_path', default='../ssb-benchmark/results')  # External write
     parser.add_argument('--raw_folder', default='../ssb-benchmark/results')  # External write
     parser.add_argument('--confidence_intervals', help='Compute confidence intervals', action='store_true')
@@ -119,6 +119,7 @@ if __name__ == '__main__':
     # Generate schema
     table_csv_path = args.csv_path + '/{}.csv'
     version = args.version
+    
     if args.dataset == 'imdb-light':
         schema = gen_job_light_imdb_schema(table_csv_path)
     elif args.dataset == 'ssb-500gb':
@@ -129,7 +130,8 @@ if __name__ == '__main__':
         schema = gen_1t_tpc_ds_schema(table_csv_path)
     elif args.dataset == 'imdb-ranges':
         schema = gen_job_ranges_imdb_schema(table_csv_path, version)  # Add a parameter
-
+    elif args.dataset == 'power':
+        schema = gen_power_schema(table_csv_path, version)  # Add a parameter
     else:
         raise ValueError('Dataset unknown')
 

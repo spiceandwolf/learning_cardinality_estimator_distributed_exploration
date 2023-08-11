@@ -2,6 +2,7 @@
 
 import argparse
 import collections
+from datetime import datetime
 import glob
 import os
 import pickle
@@ -155,7 +156,7 @@ def InvertOrder(order):
 
 def MakeTable():
     print(args.csvname)
-    table = datasets.LoadPower(args.csvname)  # modify
+    table = datasets.LoadDistributedPower(args.csvname)  # modify
 
     oracle_est = estimators_lib.Oracle(table)
     if args.run_bn:
@@ -363,15 +364,7 @@ def RunN(table,
                 cols.append(col)
                 ops.append(op)
                 vals.append(val)
-            '''
-            print('cols, ops ,vals ', cols, ops, vals)
-            query = cols, ops, vals
-            estcard = estimators[0].Query(cols, ops,
-                                          vals)  # oracle_est
-            print('res:', estcard, true_card)
-            ests_new.append(estcard)
-            truths_new.append(true_card)
-            '''            
+            
             for est in estimators:
                 est_card = est.Query(cols, ops, vals)
                 err = ErrorMetric(est_card, true_card)
@@ -527,11 +520,11 @@ def ReportModel(model, blacklist=None):
     return mb
 
 
-def SaveEstimators(path, estimators, return_df=False, result_path=f'./{args.dataset}.naru.txt'):
+def SaveEstimators(path, estimators, return_df=False, result_path=f'./{os.path.splitext(args.csvname)[0]}.naru.txt'):
     # name, query_dur_ms, errs, est_cards, true_cards
     results = pd.DataFrame()
     fmetric = open(result_path, 'a')
-    fmetric.write(f"time: {time.time()}\n")
+    fmetric.write(f"time: {datetime.now()}\n")
     for est in estimators:
         data = {
             'est': [est.name] * len(est.errs),
@@ -569,8 +562,8 @@ def LoadOracleCardinalities():
 
 def Main():
     os.environ['CUDA_VISIBLE_DEVICES'] = '0'
-    all_ckpts = glob.glob('./models/{}'.format(args.glob))
-    all_ckpts = glob.glob('./models/' + str(args.dataset) + '*.pt')
+    all_ckpts = glob.glob('../../Overall_distributed/naru/models/{}'.format(args.glob))
+    all_ckpts = glob.glob('../../Overall_distributed/naru/models/' + str(os.path.splitext(args.csvname)) + '*.pt')
     print(args.blacklist)
     if args.blacklist:
         all_ckpts = [ckpt for ckpt in all_ckpts if args.blacklist not in ckpt]
@@ -583,6 +576,7 @@ def Main():
         # OK to load tables now
         table, train_data, oracle_est = MakeTable()
         cols_to_train = table.columns
+        print('cols_to_train :', cols_to_train)
 
     Ckpt = collections.namedtuple(
         'Ckpt', 'epoch model_bits bits_gap path loaded_model seed')
@@ -696,7 +690,7 @@ def Main():
                  oracle_cards=oracle_cards,
                  oracle_est=oracle_est)
     print(len(estimators))
-    SaveEstimators(args.err_csv, estimators)
+    SaveEstimators(args.err_csv, estimators, result_path=f'../../Overall_distributed/naru/{os.path.splitext(args.csvname)[0]}.naru.txt')
     print('...Done, result:', args.err_csv)
 
 

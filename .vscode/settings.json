@@ -1,0 +1,5 @@
+{
+    "python.analysis.extraPaths": [
+        "./Overall/deepdb/deepdb-forest_power/deepdb_job_ranges/ensemble_compilation"
+    ]
+}

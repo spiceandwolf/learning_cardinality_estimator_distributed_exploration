@@ -1,0 +1,8 @@
+est.name: psample_2000_0_8.747
+Q-Error 50%-Percentile: 1.9573526858725414
+Q-Error 90%-Percentile: 4.428479000486036
+Q-Error 95%-Percentile: 7.024999999999997
+Q-Error 99%-Percentile: 17.136944444444442
+Q-Error 100%-Percentile: 56.0
+Q-Mean wo inf 2.8624595009484413
+Latency avg: 5.85ms

@@ -229,17 +229,17 @@ def RunEpoch(split,
 
         losses.append(loss.item())
 
-        if step % log_every == 0:
-            if split == 'train':
-                print(
-                    'Epoch {} Iter {}, {} entropy gap {:.4f} bits (loss {:.3f}, data {:.3f}) {:.5f} lr'
-                        .format(epoch_num, step, split,
-                                loss.item() / np.log(2) - table_bits,
-                                loss.item() / np.log(2), table_bits, lr))
-            else:
-                print('Epoch {} Iter {}, {} loss {:.4f} nats / {:.4f} bits'.
-                      format(epoch_num, step, split, loss.item(),
-                             loss.item() / np.log(2)))
+        # if step % log_every == 0:
+        #     if split == 'train':
+        #         print(
+        #             'Epoch {} Iter {}, {} entropy gap {:.4f} bits (loss {:.3f}, data {:.3f}) {:.5f} lr'
+        #                 .format(epoch_num, step, split,
+        #                         loss.item() / np.log(2) - table_bits,
+        #                         loss.item() / np.log(2), table_bits, lr))
+        #     else:
+        #         print('Epoch {} Iter {}, {} loss {:.4f} nats / {:.4f} bits'.
+        #               format(epoch_num, step, split, loss.item(),
+        #                      loss.item() / np.log(2)))
 
         if split == 'train':
             opt.zero_grad()
@@ -332,7 +332,7 @@ def TrainTask(seed=0):
     np.random.seed(0)
     os.environ['CUDA_VISIBLE_DEVICES'] = '0'
 
-    table = datasets.LoadPower(args.csvname)
+    table = datasets.LoadDistributedPower(args.csvname)
 
     table_bits = Entropy(
         table,
@@ -399,11 +399,11 @@ def TrainTask(seed=0):
                                          table_bits=table_bits)
 
         if epoch % 1 == 0:
-            print('epoch {} train loss {:.4f} nats / {:.4f} bits'.format(
-                epoch, mean_epoch_train_loss,
-                mean_epoch_train_loss / np.log(2)))
+            # print('epoch {} train loss {:.4f} nats / {:.4f} bits'.format(
+            #     epoch, mean_epoch_train_loss,
+            #     mean_epoch_train_loss / np.log(2)))
             since_start = time.time() - train_start
-            print('time since start: {:.1f} secs'.format(since_start))
+            # print('time since start: {:.1f} secs'.format(since_start))
 
         train_losses.append(mean_epoch_train_loss)
 
@@ -423,20 +423,20 @@ def TrainTask(seed=0):
 
     if fixed_ordering is None:
         if seed is not None:
-            PATH = 'models/{}-{:.1f}MB-model{:.3f}-data{:.3f}-{}-{}epochs-seed{}.pt'.format(
-                args.dataset, mb, model.model_bits, table_bits, model.name(),
+            PATH = '../../Overall_distributed/naru/models/{}-{:.1f}MB-model{:.3f}-data{:.3f}-{}-{}epochs-seed{}.pt'.format(
+                os.path.splitext(args.csvname)[0], mb, model.model_bits, table_bits, model.name(),
                 args.epochs, seed)
         else:
-            PATH = 'models/{}-{:.1f}MB-model{:.3f}-data{:.3f}-{}-{}epochs-seed{}-{}.pt'.format(
-                args.dataset, mb, model.model_bits, table_bits, model.name(),
+            PATH = '../../Overall_distributed/naru/models/{}-{:.1f}MB-model{:.3f}-data{:.3f}-{}-{}epochs-seed{}-{}.pt'.format(
+                os.path.splitext(args.csvname)[0], mb, model.model_bits, table_bits, model.name(),
                 args.epochs, seed, time.time())
     else:
         annot = ''
         if args.inv_order:
             annot = '-invOrder'
 
-        PATH = 'models/{}-{:.1f}MB-model{:.3f}-data{:.3f}-{}-{}epochs-seed{}-order{}{}.pt'.format(
-            args.dataset, mb, model.model_bits, table_bits, model.name(),
+        PATH = '../../Overall_distributed/naru/models/{}-{:.1f}MB-model{:.3f}-data{:.3f}-{}-{}epochs-seed{}-order{}{}.pt'.format(
+            os.path.splitext(args.csvname)[0], mb, model.model_bits, table_bits, model.name(),
             args.epochs, seed, '_'.join(map(str, fixed_ordering)), annot)
     os.makedirs(os.path.dirname(PATH), exist_ok=True)
     torch.save(model.state_dict(), PATH)

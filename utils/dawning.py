@@ -1,6 +1,7 @@
 from math import log
 import matplotlib
 from matplotlib import ticker
+import pandas as pd
 matplotlib.use('Agg')
 
 import matplotlib.pyplot as plt
@@ -238,6 +239,63 @@ def draw_learning_card(file_path, count):
         subsets.append(subset)
     return subsets
 
+def get_card_naru(csv_path):
+    results = pd.read_csv(csv_path, header=0)
+    met = []
+    mee = []
+    latency_ms = []
+    for _, result in results.iterrows():
+        mee.append(result['est_card'])
+        met.append(result['true_card'])
+        latency_ms.append(result['query_dur_ms'])
+    return mee, met, latency_ms
+
+def get_card_deepdb(csv_path):
+    results = pd.read_csv(csv_path, header=0)
+    met = []
+    mee = []
+    latency_ms = []
+    for _, result in results.iterrows():
+        mee.append(result['cardinality_predict'])
+        met.append(result['cardinality_true'])
+        latency_ms.append(result['latency_ms'])
+    return mee, met, latency_ms
+
+def draw_box_plot():
+    # load data
+    deepdb_mee_1, deepdb_met, _ = get_card_deepdb('~/oblab/CardinalityEstimationTestbed/Overall_distributed/deepdb/power_1.deepdb.results.csv')
+    deepdb_mee_2, _, _ = get_card_deepdb('~/oblab/CardinalityEstimationTestbed/Overall_distributed/deepdb/power_2.deepdb.results.csv')
+    deepdb_mee_3, _, _ = get_card_deepdb('~/oblab/CardinalityEstimationTestbed/Overall_distributed/deepdb/power_3.deepdb.results.csv')
+    
+    naru_mee_1, naru_met, _ = get_card_naru('~/oblab/CardinalityEstimationTestbed/Overall_distributed/naru/power_1.result.csv')
+    naru_mee_2, _, _ = get_card_naru('~/oblab/CardinalityEstimationTestbed/Overall_distributed/naru/power_2.result.csv')
+    naru_mee_3, _, _ = get_card_naru('~/oblab/CardinalityEstimationTestbed/Overall_distributed/naru/power_3.result.csv')
+    
+    deepdb_mees = np.array(deepdb_mee_1) + np.array(deepdb_mee_2) + np.array(deepdb_mee_3)
+    deepdb_mets = np.array(deepdb_met)
+    
+    naru_mees = np.array(naru_mee_1) + np.array(naru_mee_2) + np.array(naru_mee_3)
+    naru_mets = np.array(naru_met)
+    
+    deepdb_qerrors = qerror(deepdb_mees, deepdb_mets)
+    deepdb_qerrors = np.array(deepdb_qerrors)
+    
+    naru_qerrors = qerror(naru_mees, naru_mets)
+    naru_qerrors = np.array(naru_qerrors)
+    
+    data = [deepdb_qerrors, naru_qerrors]
+    
+    # drawing
+    plt.boxplot(data, showmeans=True)
+    # plt.ylim(10,50)
+    plt.xticks([1,2],['deepdb','naru'])
+    plt.grid(axis='y',ls='--',alpha=0.5)
+    plt.ylabel('q-error')
+    
+    plt.savefig(r'box_plot.png', dpi=400, bbox_inches = 'tight')
+
+    plt.show()
+    
 # example()
 '''
 # mscn
@@ -459,4 +517,4 @@ def draw_learning_card(file_path, count):
 # naru
 '''
 # drawn_scattergram(fig_path, scatter_infos, (25, 24))
-example()
+draw_box_plot()

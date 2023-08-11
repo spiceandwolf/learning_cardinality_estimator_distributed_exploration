@@ -74,6 +74,36 @@
 					"label": ""
 				}
 			]
+		},
+		{
+			"path": "Overall/deepdb/deepdb-imdb/deepdb_job_ranges/data_preparation/join_data_preparation.py",
+			"bookmarks": [
+				{
+					"line": 335,
+					"column": 19,
+					"label": ""
+				}
+			]
+		},
+		{
+			"path": "Overall/deepdb/deepdb-imdb/deepdb_job_ranges/ensemble_compilation/spn_ensemble.py",
+			"bookmarks": [
+				{
+					"line": 954,
+					"column": 13,
+					"label": ""
+				}
+			]
+		},
+		{
+			"path": "Overall/deepdb/deepdb-imdb/deepdb_job_ranges/aqp_spn/aqp_spn.py",
+			"bookmarks": [
+				{
+					"line": 366,
+					"column": 19,
+					"label": ""
+				}
+			]
 		}
 	]
 }

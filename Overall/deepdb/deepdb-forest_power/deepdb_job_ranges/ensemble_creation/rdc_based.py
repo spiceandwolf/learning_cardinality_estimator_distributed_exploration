@@ -97,7 +97,7 @@ def candidate_rdc_sum_means(pairwise_max_rdc, table_index_dict, ensemble_candida
     return rdc_mean_sum
 
 
-def candidate_evaluation(version, schema, meta_data_path, sample_size, spn_sample_size, max_table_data, ensemble_path,
+def candidate_evaluation(version, partition, schema, meta_data_path, sample_size, spn_sample_size, max_table_data, ensemble_path,
                          physical_db_name, postsampling_factor, ensemble_budget_factor, max_no_joins, rdc_learn,
                          pairwise_rdc_path, rdc_threshold=0.15, random_solutions=10000, bloom_filters=False,
                          incremental_learning_rate=0, incremental_condition=None):
@@ -278,10 +278,10 @@ def candidate_evaluation(version, schema, meta_data_path, sample_size, spn_sampl
 
     if incremental_learning_rate and omit_incremental:
         # ensemble_path += f'/ensemble_join_{max_no_joins}_budget_{ensemble_budget_factor}_{spn_sample_size[0]}_only_{int(100-incremental_learning_rate)}_percent.pkl'
-        ensemble_path += version + '.sql.deepdb.model.pkl'
+        ensemble_path += f'{version}_{partition}.sql.deepdb.model.pkl'
     else:
         # ensemble_path += f'/ensemble_join_{max_no_joins}_budget_{ensemble_budget_factor}_{spn_sample_size[0]}.pkl '
-        ensemble_path += version + '.sql.deepdb.model.pkl'  # Ensemble_path modified
+        ensemble_path += f'{version}_{partition}.sql.deepdb.model.pkl'  # Ensemble_path modified
     logger.info(f"Saving ensemble to {ensemble_path}")
     spn_ensemble.save(ensemble_path)
 

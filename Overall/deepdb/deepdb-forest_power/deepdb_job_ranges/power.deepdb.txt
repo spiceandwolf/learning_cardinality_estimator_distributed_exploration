@@ -1,0 +1,48 @@
+PCCs:-0.027250334427003888
+Q-Error 50%-Percentile: 66.21527289101078
+Q-Error 90%-Percentile: 26170.744943407997
+Q-Error 95%-Percentile: 194736.9250589481
+Q-Error 99%-Percentile: 1018181.9986858363
+Q-Error 100%-Percentile: 2037302.413203384
+Q-Mean wo inf 46711.656132500575
+Latency avg: 4.38ms
+PCCs:0.998730007370147
+Q-Error 50%-Percentile: 1.9563588345226492
+Q-Error 90%-Percentile: 5.016574117972133
+Q-Error 95%-Percentile: 8.505308711574793
+Q-Error 99%-Percentile: 27.220811361496892
+Q-Error 100%-Percentile: 143.23548065354063
+Q-Mean wo inf 3.3487484819651203
+Latency avg: 4.38ms
+PCCs:nan
+Q-Error 50%-Percentile: inf
+Q-Error 90%-Percentile: inf
+Q-Error 95%-Percentile: inf
+Q-Error 99%-Percentile: inf
+Q-Error 100%-Percentile: nan
+Q-Mean wo inf nan
+Latency avg: 0.00ms
+PCCs:nan
+Q-Error 50%-Percentile: inf
+Q-Error 90%-Percentile: inf
+Q-Error 95%-Percentile: inf
+Q-Error 99%-Percentile: inf
+Q-Error 100%-Percentile: nan
+Q-Mean wo inf nan
+Latency avg: 0.00ms
+PCCs:nan
+Q-Error 50%-Percentile: inf
+Q-Error 90%-Percentile: inf
+Q-Error 95%-Percentile: inf
+Q-Error 99%-Percentile: inf
+Q-Error 100%-Percentile: nan
+Q-Mean wo inf nan
+Latency avg: 0.00ms
+PCCs:nan
+Q-Error 50%-Percentile: inf
+Q-Error 90%-Percentile: inf
+Q-Error 95%-Percentile: inf
+Q-Error 99%-Percentile: inf
+Q-Error 100%-Percentile: nan
+Q-Mean wo inf nan
+Latency avg: 0.00ms

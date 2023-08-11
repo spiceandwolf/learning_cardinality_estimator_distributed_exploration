@@ -253,3 +253,20 @@ def gen_job_ranges_imdb_schema(csv_path, version):
                            table_size=table_head.shape[0]))
 
     return schema
+
+def gen_power_schema(csv_path, version, partition):
+    schema = SchemaGraph()
+
+    # tables
+    attributes = []
+
+    tablenamecsv = version + '_' + str(partition)
+    table_head = pd.read_csv(csv_path.format(tablenamecsv),
+                             names=['Date','Time','Global_active_power','Global_reactive_power','Voltage','Global_intensity','Sub_metering_1','Sub_metering_2','Sub_metering_3'],
+                             sep=',', escapechar='\\', encoding='utf-8', low_memory=False, quotechar='"')
+    schema.add_table(Table(version, attributes=list(table_head.columns),
+                           irrelevant_attributes=['Date', 'Time'],
+                           csv_file_location=csv_path.format(tablenamecsv),  # debug的思路要正确 范围
+                           table_size=table_head.shape[0]))
+
+    return schema

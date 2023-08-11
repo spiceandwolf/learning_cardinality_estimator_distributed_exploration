@@ -5,7 +5,7 @@ from ensemble_compilation.utils import gen_full_join_query, print_conditions
 
 class DBConnection:
 
-    def __init__(self, db='postgres', db_user='postgres', db_host="/var/run/postgresql", db_password="jintao",
+    def __init__(self, db='ai4db', db_user='user1', db_host="localhost", db_password="linux123",
                  db_port="5432"):
         self.db_user = db_user
         self.db_password = db_password
@@ -26,6 +26,14 @@ class DBConnection:
         cursor.execute(query)
         connection.commit()
         connection.set_isolation_level(old_isolation_level)
+
+    def get_connection(self):
+        connection = psycopg2.connect(user=self.db_user,
+                                      password=self.db_password,
+                                      host=self.db_host,
+                                      port=self.db_port,
+                                      database=self.db)
+        return connection
 
     def get_dataframe(self, sql):
         connection = psycopg2.connect(user=self.db_user,

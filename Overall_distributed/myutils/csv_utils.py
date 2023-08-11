@@ -1,7 +1,8 @@
+import csv
+import os
 import numpy as np
 import pandas as pd
-
-from myutils.graph_representation import QueryType, Table
+from datetime import datetime
 
 def read_table_csv(table, csv_seperator=','):
     """
@@ -67,7 +68,30 @@ def Discretize(col, data=None):
     bin_ids = bin_ids.astype(np.int32, copy=False)
     assert (bin_ids >= 0).all(), (col, data, bin_ids)
     return bin_ids
-    
+
+def convert_txt_2_csv(folder_path, csv_seperator=','):
+    txt_files = [os.path.join(folder_path, f) for f in os.listdir(folder_path) if f.endswith('.txt')]
+    for txt_file in txt_files:
+        file_name = os.path.basename(txt_file).replace(".txt", ".cvs")
+        
+        # df_rows = pd.read_csv(table_path, escapechar='\\',
+        #                     encoding='utf-8', quotechar='"', sep=csv_seperator, low_memory= False)
+            
+        with open(txt_file, 'r') as f:
+            with open(file_name, 'w', newline='') as csvfile:
+                writer = csv.writer(csvfile)
+                for line in f:
+                    row = line.strip().split('\t')
+                    writer.writerow(row)
+
+def convert_power_2_yyyy_mm_dd(table_path, targat_table_path, csv_seperator=','):
+    df_rows = pd.read_csv(table_path, escapechar='\\', parse_dates=['Date'], 
+                          date_parser=lambda x:datetime.strptime(x, '%d/%m/%Y'),
+                          na_values='?', dtype=str,
+                          encoding='utf-8', quotechar='"', sep=csv_seperator, low_memory= False)
+    df_rows.dropna(inplace=True)
+    df_rows.to_csv(targat_table_path, index=False, sep=csv_seperator, encoding = 'utf-8')
+               
 csv_path_to_be_handel = '~/oblab/CardinalityEstimationTestbed/Overall/train-test-data/imdbdata-num' + '/{}.csv'
 
 table_infos = {
@@ -98,6 +122,10 @@ table_infos = {
     'kind_type':['id', 'kind'],
 }
 
-for table_info in table_infos.items():
-    table_path = csv_path_to_be_handel.format(table_info[0])
-    add_header(table_path, table_info[1])
+# for table_info in table_infos.items():
+#     table_path = csv_path_to_be_handel.format(table_info[0])
+#     add_header(table_path, table_info[1])
+
+table_path = '/home/hdd/user1/oblab/CardinalityEstimationTestbed/Overall/train-test-data/forest_power-data-sql/household_power_consumption.txt'
+targat_table_path = '/home/hdd/user1/oblab/CardinalityEstimationTestbed/Overall/train-test-data/forest_power-data-sql/no_head/household_power_consumption.csv'
+convert_power_2_yyyy_mm_dd(table_path, targat_table_path, ';')
