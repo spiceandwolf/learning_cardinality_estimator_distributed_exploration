@@ -153,6 +153,7 @@ Overall_distributed/deepdb/*.txt
 Overall_distributed/deepdb/*.csv
 Overall_distributed/deepdb/*.pkl
 Overall_distributed/naru/models
+Overall_distributed/metric_result/*.json
 Synthetic/sql_truecard/
 Synthetic/csvdata_sql/*
 Synthetic/deepdb/imdb-benchmark/*

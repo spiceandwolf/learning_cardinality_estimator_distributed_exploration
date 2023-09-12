@@ -89,8 +89,23 @@
 			"path": "Overall/deepdb/deepdb-imdb/deepdb_job_ranges/ensemble_compilation/spn_ensemble.py",
 			"bookmarks": [
 				{
+					"line": 169,
+					"column": 39,
+					"label": ""
+				},
+				{
+					"line": 606,
+					"column": 24,
+					"label": ""
+				},
+				{
 					"line": 954,
 					"column": 13,
+					"label": ""
+				},
+				{
+					"line": 1311,
+					"column": 21,
 					"label": ""
 				}
 			]

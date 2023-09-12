@@ -6,7 +6,7 @@ from myutils.graph_representation import Query
 
 class DBConnection:
 
-    def __init__(self, db='ai4db', db_user='user1', db_host="localhost", db_password="linux123",
+    def __init__(self, db='imdb_num', db_user='user1', db_host="localhost", db_password="linux123",
                  db_port="5432"):
         self.db_user = db_user
         self.db_password = db_password
@@ -91,6 +91,23 @@ class DBConnection:
 
         return rows
 
+    def get_query_explain(self, sql):
+        connection = psycopg2.connect(user=self.db_user,
+                                      password=self.db_password,
+                                      host=self.db_host,
+                                      port=self.db_port,
+                                      database=self.db)
+        cursor = connection.cursor()
+        
+        cursor.execute("EXPLAIN (ANALYZE, VERBOSE, FORMAT JSON)" + sql)
+        record = cursor.fetchone()
+        result = record[0]
+
+        if connection:
+            cursor.close()
+            connection.close()
+
+        return result
 
 class TrueCardinalityEstimator:
     """Queries the database to return true cardinalities."""

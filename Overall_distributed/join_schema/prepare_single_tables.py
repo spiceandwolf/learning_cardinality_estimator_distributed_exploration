@@ -7,6 +7,55 @@ import pandas as pd
 
 logger = logging.getLogger(__name__)
 
+class Base_estimators:
+    '''
+    每个partition对应的学习型基数估计器
+    '''
+    def __init__(self, table, id, rows, model):
+        self.table = table
+        self.id = id
+        # 记录每个attributes的最大值和最小值
+        self.attributes = {}
+        self.rows = rows
+        self.model = model
+        
+    def set_attr_max_min(self, attributes, attr_min_max_vals, alias2table = {'cast_info': 'ci', 'movie_companies': 'mc', 'movie_info':'mi', 'movie_keyword': 'mk',
+                   'movie_info_idx': 'mi_idx', 'title': 't'}):
+        for attr in attributes:
+            col = attr.split('.')[1]
+            attr = alias2table[attr.split('.')[0]] + f".{col}"
+            
+            max = attr_min_max_vals[attr][1]
+            min = attr_min_max_vals[attr][0]
+            self.attributes[attr] = [float(min), float(max)]
+            
+    def gaussian_prob(self, table_info):
+        left_bounds, right_bounds = table_info
+        
+        left_bounds = list(left_bounds.values())
+        # print(f'left_bounds:{left_bounds}')
+        
+        right_bounds = list(right_bounds.values())
+        # print(f'right_bounds:{right_bounds}')
+        
+        return self.model.gaussian_prob(np.array(left_bounds, dtype=np.float32), np.array(right_bounds, dtype=np.float32))
+    
+    def sqr_gaussian_prob(self, table_info):
+        left_bounds, right_bounds = table_info
+        
+        left_bounds = list(left_bounds.values())
+        # print(f'left_bounds:{left_bounds}')
+        
+        right_bounds = list(right_bounds.values())
+        # print(f'right_bounds:{right_bounds}')
+        
+        return self.model.sqr_gaussian_prob(np.array(left_bounds, dtype=np.float32), np.array(right_bounds, dtype=np.float32))
+    
+    def get_model_size(self):
+        n_params = self.model.get_num_parameters(self.model)
+        print('There are {} trainable parameters in this model.'.format(n_params))
+        print('Parameters total size is {} MB'.format(n_params * 4 / 1024 / 1024))
+        
 
 def read_table_csv(table_obj, csv_seperator=','):
     """

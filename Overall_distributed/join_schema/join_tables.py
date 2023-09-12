@@ -1,8 +1,7 @@
+import copy
 import logging
 import numpy as np
 import networkx as nx
-
-from join_schema.join_data_preparation import JoinDataPreparator
 
 logger = logging.getLogger(__name__)
 
@@ -77,7 +76,7 @@ def process_condition_join(cond, tables_all):
     return None, None, False, None
 '''
 
-def build_join_graph(schema, meta_data_path, max_table_data):
+def build_join_graph(schema):
     '''
     L = [(0,1), (1,2)]
     all_pairs_shortest_path = {0: {0: [0], 1: [0, 1], 2: [0, 1, 2]}, 
@@ -86,8 +85,6 @@ def build_join_graph(schema, meta_data_path, max_table_data):
     all_pair_list = [(0,1,[0, 1]), (1,2,[1, 2]), (0,2,[0, 1, 2])]
     join_graph = [(0,1,[(0, 1)]), (1,2,[(1, 2)]), (0,2,[(0, 1),(1, 2)])]
     '''
-    prep = JoinDataPreparator(meta_data_path + "/meta_data_sampled.pkl", schema, max_table_data=max_table_data)
-    
     # build graph from schema
     table_index_dict = {table.table_name: i for i, table in enumerate(schema.tables)}
     inverse_table_index_dict = {table_index_dict[k]: k for k in table_index_dict.keys()}
@@ -118,3 +115,55 @@ def build_join_graph(schema, meta_data_path, max_table_data):
         join_graph.append((left_table, right_table, path_list,))
     
     return join_graph
+
+class JoinTree:
+    def __init__(self, values=None, relationship=None) -> None:
+        self.values = values
+        self.relationship = relationship
+        self.left = None
+        self.right = None
+        
+    def insert_left(self, branch):
+        if self.left == None:
+            self.left = JoinTree(branch)
+        else:
+            t = JoinTree(branch)
+            t.left = self.left
+            self.left = t
+    
+    def insert_right(self, branch):
+        if self.right == None:
+            self.right = JoinTree(branch)
+        else:
+            t = JoinTree(branch)
+            t.right = self.rightt
+            self.right = t
+            
+    def add_branch_left(self, branch):
+        if self.left == None:
+            self.left = copy.copy(branch)
+        else:
+            raise ValueError("something wrong when insert left!")
+            self.left.add_branch_left(branch)
+            
+    def add_branch_right(self, branch):
+        if self.right == None:
+            self.right = copy.copy(branch)
+        else:
+            raise ValueError("something wrong when insert right!")
+            self.right.add_branch_right(branch)
+            
+    def get_left(self):
+        return self.left
+    
+    def get_right(self):
+        return self.right
+    
+    def set_values(self, obj):
+        self.values = obj
+    
+    def get_values(self):
+        return self.values   
+    
+    def get_relationship(self):
+        return self.relationship

@@ -27,6 +27,8 @@ class GaussianNetwork(nn.Module):
         )
         self.le2_mu = nn.Linear(n_h, n_latent)
         self.le2_ln_var = nn.Linear(n_h, n_latent)
+        self.bn = nn.BatchNorm1d(n_latent, affine=False)
+        self.scaler = Scaler(n_latent)
 
         # Decoder
         self.ld1 = nn.Sequential(
@@ -39,7 +41,16 @@ class GaussianNetwork(nn.Module):
 
     def encode(self, x):
         h = self.le1(x)
-        return self.le2_mu(h), self.le2_ln_var(h)
+        
+        mu = self.le2_mu(h)
+        mu = self.bn(mu)
+        mu = self.scaler(mu, mode='positive')
+        
+        ln_var = self.le2_ln_var(h)
+        ln_var = self.bn(ln_var)
+        ln_var = self.scaler(ln_var,  mode='negative')
+        
+        return mu, ln_var
 
     def decode(self, z):
         h = self.ld1(z)
@@ -76,7 +87,18 @@ class GaussianNetwork(nn.Module):
 
         return torch.cat(lls, dim=1).logsumexp(dim=1) - math.log(k)
     
-
+class Scaler(nn.Module):
+    def __init__(self, n_inputs, tau=0.5, **kwargs) -> None:
+        super(Scaler, self).__init__()
+        self.tau = tau
+        self.scale = nn.Parameter(torch.zeros(n_inputs))
+        
+    def forward(self, inputs, mode='positive'):
+        if mode == 'positive':
+            scale = self.tau + (1 - self.tau) * torch.sigmoid(self.scale)
+        else:
+            scale = (1 - self.tau) * torch.sigmoid(-self.scale)
+        return inputs * torch.sqrt(scale)
 
 class GaussianVAE:
     def __init__(self, n_in, n_latent, n_h):

@@ -95,8 +95,8 @@ class SchemaGraph:
                                     end_attr,
                                     multiplier_attribute_name)  
 
-        print('start_name, start_attr, end_name, end_attr, multiplier_attribute_name:\n', start_name, '\n', start_attr,
-              '\n', end_name, '\n', end_attr, '\n', multiplier_attribute_name)
+        print('start_name, start_attr, end_name, end_attr, multiplier_attribute_name:\n', start_name, start_attr,
+               end_name, end_attr, multiplier_attribute_name)
         self.relationships.append(relationship)
         self.relationship_dictionary[relationship.identifier] = relationship
         print('relationship.identifier:\n', relationship.identifier)

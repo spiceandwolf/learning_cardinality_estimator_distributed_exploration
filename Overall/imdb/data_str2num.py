@@ -1,3 +1,4 @@
+import csv
 import numpy as np
 import pandas as pd
 from tqdm import tqdm
@@ -51,5 +52,7 @@ for key in data_list:
 for i in tqdm(range(len(df['imdb_index']))):
     if (pd.notnull(df['imdb_index'][i])):
         df['imdb_index'][i] = res[df['imdb_index'][i]]
+
+df['title'].fillna('N/A', inplace=True)
 
 df.to_csv("../train-test-data/imdbdata-num/no_head/title.csv", header=False, index=False)

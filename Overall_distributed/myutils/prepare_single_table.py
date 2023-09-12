@@ -256,4 +256,17 @@ def get_col_statistics(table_data, table_meta_data, min_max_file):
         distinct_nums.append(len(col_materialize.unique()))
     statistics = pd.DataFrame(
         data={'name': names, 'min': mins, 'max': maxs, 'cardinality': cards, 'num_unique_values': distinct_nums})
-    statistics.to_csv(min_max_file, index=False)
+    if os.path.exists(min_max_file):
+        statistics.to_csv(min_max_file, index=False, mode='a', header=None)
+    else:
+        statistics.to_csv(min_max_file, index=False)
+    return statistics.to_dict('list')
+
+def get_normalized_value(table_data):
+        n, dim = table_data.shape
+        mu = table_data.mean(axis=0)
+        s = table_data.std(axis=0)
+        for i in range(dim):
+            table_data[:,i] = (table_data[:,i] - mu[i])/s[i]
+        
+        return table_data
