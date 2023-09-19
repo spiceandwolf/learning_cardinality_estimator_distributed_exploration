@@ -1,7 +1,7 @@
 """参考deepdb的DBConnection.py"""
 import pandas as pd
 import psycopg2
-from myutils.graph_representation import Query
+from graph_representation import Query
 
 
 class DBConnection:
@@ -117,11 +117,6 @@ class TrueCardinalityEstimator:
         self.db_connection = db_connection
 
     def true_cardinality(self, query):
-        full_join_query = Query.gen_full_join_query(self.schema_graph, query.relationship_set, query.table_set, "JOIN")
-
-        where_cond = Query.print_conditions(query.conditions, seperator='AND')
-        if where_cond != "":
-            where_cond = "WHERE " + where_cond
-        sql_query = full_join_query.format("COUNT(*)", where_cond)
-        cardinality = self.db_connection.get_result(sql_query)
-        return sql_query, cardinality
+        
+        cardinality = self.db_connection.get_result(query)
+        return cardinality
