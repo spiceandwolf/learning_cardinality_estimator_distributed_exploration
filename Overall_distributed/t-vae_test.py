@@ -6,7 +6,7 @@ import time
 import numpy as np
 import pandas as pd
 import torch
-from myutils.prepare_single_table import get_col_statistics, get_normalized_value, prepare_single_table
+from myutils.prepare_single_table import get_col_statistics, prepare_single_table
 from myutils.csv_utils import read_table_csv
 from myutils.schema import gen_imdb_cols2_schema
 import myutils.my_utils as my_utils

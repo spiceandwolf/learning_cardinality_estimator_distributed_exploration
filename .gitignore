@@ -141,12 +141,14 @@ cython_debug/
 # ai4db
 Overall/train-test-data/
 .idea
+.vscode/
 */logs
 Overall/deepdb/deepdb-imdb/imdb-benchmark/
 Overall/deepdb/deepdb-forest_power/imdb-benchmark
 Overall/naru/models
 Overall_distributed/save/
 Overall_distributed/data/
+Overall_distributed/data/*csv
 Overall_distributed/naru/*.txt
 Overall_distributed/naru/*.csv
 Overall_distributed/deepdb/*.txt

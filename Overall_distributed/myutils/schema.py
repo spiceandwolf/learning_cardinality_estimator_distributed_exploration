@@ -1,5 +1,5 @@
 """参考deepdb的schema.py"""
-from graph_representation import SchemaGraph, Table
+from myutils.graph_representation import SchemaGraph, Table
 
 def gen_job_light_imdb_schema(csv_path):
     """
