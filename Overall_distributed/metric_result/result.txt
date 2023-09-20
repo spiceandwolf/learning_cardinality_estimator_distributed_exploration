@@ -82,3 +82,703 @@ MSE: 32136167251.16931
 MAPE: 74.7142494558572
 Pearson Correlation: PearsonRResult(statistic=0.9441609535099795, pvalue=0.0)
 
+model_path: save/imdb/single/model_title_0.0001_16_40
+Median: nan
+90th percentile: nan
+95th percentile: nan
+99th percentile: nan
+99th percentile: nan
+Max: nan
+Mean: nan
+MSE: nan
+MAPE: nan
+model_path: save/imdb/single/model_title_0.0001_16_40
+Median: nan
+90th percentile: nan
+95th percentile: nan
+99th percentile: nan
+99th percentile: nan
+Max: nan
+Mean: nan
+MSE: nan
+MAPE: nan
+model_path: save/imdb/single/model_title_0.0001_16_40
+Median: nan
+90th percentile: nan
+95th percentile: nan
+99th percentile: nan
+99th percentile: nan
+Max: nan
+Mean: nan
+MSE: nan
+MAPE: nan
+model_path: save/imdb/single/model_title_0.0001_16_40
+Median: nan
+90th percentile: nan
+95th percentile: nan
+99th percentile: nan
+99th percentile: nan
+Max: nan
+Mean: nan
+MSE: nan
+MAPE: nan
+model_path: save/imdb/single/model_title_0.0001_16_40
+Median: nan
+90th percentile: nan
+95th percentile: nan
+99th percentile: nan
+99th percentile: nan
+Max: nan
+Mean: nan
+MSE: nan
+MAPE: nan
+model_path: save/imdb/single/model_title_0.0001_16_40
+Median: nan
+90th percentile: nan
+95th percentile: nan
+99th percentile: nan
+99th percentile: nan
+Max: nan
+Mean: nan
+MSE: nan
+MAPE: nan
+model_path: save/imdb/single/model_title_0.0001_16_40
+Median: nan
+90th percentile: nan
+95th percentile: nan
+99th percentile: nan
+99th percentile: nan
+Max: nan
+Mean: nan
+MSE: nan
+MAPE: nan
+model_path: save/imdb/single/model_title_0.0001_16_40
+Median: nan
+90th percentile: nan
+95th percentile: nan
+99th percentile: nan
+99th percentile: nan
+Max: nan
+Mean: nan
+MSE: nan
+MAPE: nan
+model_path: save/imdb/single/model_title_0.0001_16_40
+Median: nan
+90th percentile: nan
+95th percentile: nan
+99th percentile: nan
+99th percentile: nan
+Max: nan
+Mean: nan
+MSE: nan
+MAPE: nan
+model_path: save/imdb/single/model_title_0.0001_16_40
+Median: nan
+90th percentile: nan
+95th percentile: nan
+99th percentile: nan
+99th percentile: nan
+Max: nan
+Mean: nan
+MSE: nan
+MAPE: nan
+model_path: save/imdb/single/model_title_0.0001_16_40
+Median: nan
+90th percentile: nan
+95th percentile: nan
+99th percentile: nan
+99th percentile: nan
+Max: nan
+Mean: nan
+MSE: nan
+MAPE: nan
+model_path: save/imdb/single/model_title_0.0001_16_40
+Median: nan
+90th percentile: nan
+95th percentile: nan
+99th percentile: nan
+99th percentile: nan
+Max: nan
+Mean: nan
+MSE: nan
+MAPE: nan
+model_path: save/imdb/single/model_title_0.0001_16_40
+Median: nan
+90th percentile: nan
+95th percentile: nan
+99th percentile: nan
+99th percentile: nan
+Max: nan
+Mean: nan
+MSE: nan
+MAPE: nan
+model_path: save/imdb/single/model_title_0.0001_16_40
+Median: nan
+90th percentile: nan
+95th percentile: nan
+99th percentile: nan
+99th percentile: nan
+Max: nan
+Mean: nan
+MSE: nan
+MAPE: nan
+model_path: save/imdb/single/model_title_0.0001_16_40
+Median: nan
+90th percentile: nan
+95th percentile: nan
+99th percentile: nan
+99th percentile: nan
+Max: nan
+Mean: nan
+MSE: nan
+MAPE: nan
+model_path: save/imdb/single/model_title_0.0001_16_40
+Median: 3.4975836955398996
+90th percentile: 3.4975836955398996
+95th percentile: 3.4975836955398996
+99th percentile: 3.4975836955398996
+99th percentile: 3.4975836955398996
+Max: 3.4975836955398996
+Mean: 3.4975836955398996
+MSE: 3853145140690.9243
+MAPE: 9338333.950843235
+model_path: save/imdb/single/model_title_0.0001_16_40
+Median: 2.201716744354578
+90th percentile: 2.201716744354578
+95th percentile: 2.201716744354578
+99th percentile: 2.201716744354578
+99th percentile: 2.201716744354578
+Max: 2.201716744354578
+Mean: 2.201716744354578
+MSE: 1419644324668.9995
+MAPE: 5878411.8257587645
+model_path: save/imdb/single/model_title_0.0001_16_40
+Median: 6.0
+90th percentile: 2332.436592862273
+95th percentile: 5085.255201674116
+99th percentile: 15301.999154751045
+99th percentile: 15301.999154751045
+Max: 35781.74102352075
+Mean: 914.7638007562689
+MSE: 117601824632.7165
+MAPE: 260.74467063314285
+Pearson Correlation: (0.8119707837440518, 0.0)
+
+model_path: save/imdb/single/model_title_0.0001_32_40
+Median: 6.064647981992576
+90th percentile: 2357.3629423552643
+95th percentile: 5087.762692337325
+99th percentile: 15472.279999999999
+99th percentile: 15472.279999999999
+Max: 37915.52545452686
+Mean: 930.691797400522
+MSE: 120175782229.8701
+MAPE: 259.99712392649553
+Pearson Correlation: (0.810053921919529, 0.0)
+
+model_path: save/imdb/single/model_title_0.0001_32_128_0.5_40
+Median: 5.996665474733606
+90th percentile: 2283.292364977357
+95th percentile: 4978.345622284643
+99th percentile: 14964.55834386768
+99th percentile: 14964.55834386768
+Max: 32558.165922405715
+Mean: 896.0591929889566
+MSE: 115119539947.87088
+MAPE: 258.81656125542105
+Pearson Correlation: (0.8130373404849559, 0.0)
+
+model_path: save/imdb/single/model_title_0.0001_32_128_0.5_40
+Median: 6.0
+90th percentile: 2294.883940005053
+95th percentile: 4912.752228285519
+99th percentile: 14529.740447356065
+99th percentile: 14529.740447356065
+Max: 33816.576895295315
+Mean: 885.8544288434026
+MSE: 114024403399.76132
+MAPE: 257.6421573182706
+Pearson Correlation: (0.8124382020148683, 0.0)
+
+model_path: save/imdb/single/model_title_0.0001_16_128_0.5_40
+Median: 5.801548750336104
+90th percentile: 2224.7273435954226
+95th percentile: 4792.596507569321
+99th percentile: 14252.195330871244
+99th percentile: 14252.195330871244
+Max: 31668.951492662567
+Mean: 864.1048138729874
+MSE: 112789888862.86086
+MAPE: 257.7718797677404
+Pearson Correlation: (0.8143491426657609, 0.0)
+
+model_path: save/imdb/single/model_title_0.0001_16_128_0.25_40
+Median: 6.1715454482619165
+90th percentile: 2416.4827895308
+95th percentile: 5358.300000000002
+99th percentile: 15593.758483981568
+99th percentile: 15593.758483981568
+Max: 35216.02030079766
+Mean: 945.4843280517613
+MSE: 119730230164.64331
+MAPE: 257.84448823351005
+Pearson Correlation: (0.8102096548506629, 0.0)
+
+model_path: save/imdb/single/model_title_0.0001_64_128_0.5_40
+Median: 5.9776518085560415
+90th percentile: 2317.012071179783
+95th percentile: 5043.26112509396
+99th percentile: 15082.065884417718
+99th percentile: 15082.065884417718
+Max: 36469.68977751372
+Mean: 911.6775772014727
+MSE: 118361498536.00876
+MAPE: 260.39770609279225
+Pearson Correlation: (0.812342618135512, 0.0)
+
+model_path: save/imdb/single/model_title_0.0001_64_128_0.25_40
+Median: 6.217528303408471
+90th percentile: 2372.1508377535333
+95th percentile: 5137.670435664206
+99th percentile: 15383.834863768358
+99th percentile: 15383.834863768358
+Max: 35455.50309174711
+Mean: 926.406506673002
+MSE: 119055121616.68883
+MAPE: 259.0761534030214
+Pearson Correlation: (0.8109011154396989, 0.0)
+
+model_path: save/imdb/single/model_title_0.0001_64_128_0.75_40
+Median: 6.282779669248435
+90th percentile: 2465.670920107553
+95th percentile: 5374.95255960007
+99th percentile: 16004.762223374288
+99th percentile: 16004.762223374288
+Max: 37165.07403658743
+Mean: 965.3374574164803
+MSE: 124333778396.22975
+MAPE: 261.2633032696551
+Pearson Correlation: (0.8101412793021071, 0.0)
+
+model_path: save/imdb/single/model_title_0.0001_32_128_0.75_40
+Median: 5.917992162382271
+90th percentile: 2295.530367269073
+95th percentile: 4986.731912968312
+99th percentile: 14890.413507132364
+99th percentile: 14890.413507132364
+Max: 33211.83127276327
+Mean: 893.0868754950168
+MSE: 114192909803.67108
+MAPE: 258.94851245382574
+Pearson Correlation: (0.8135168900211189, 0.0)
+
+model_path: save/imdb/single/model_title_0.0001_32_128_0.125_40
+Median: 6.248944020835855
+90th percentile: 2378.6289159424305
+95th percentile: 5254.501234286787
+99th percentile: 15430.619999999984
+99th percentile: 15430.619999999984
+Max: 35710.60949860971
+Mean: 932.1043955903511
+MSE: 113045179865.85043
+MAPE: 257.467512952899
+Pearson Correlation: (0.81068639145873, 0.0)
+
+model_path: save/imdb/single/model_title_0.0001_32_128_0.125_40
+Median: 6.862470771538877
+90th percentile: 3671.5399577616336
+95th percentile: 7757.981780016092
+99th percentile: 25399.53394966058
+99th percentile: 25399.53394966058
+Max: 53048.60128428525
+Mean: 1388.4993612238686
+MSE: 77834105228.77061
+MAPE: 267.5760516394873
+Pearson Correlation: (0.7916856533817805, 0.0)
+
+model_path: save/imdb/single/model_title_0.0001_32_128_0.125_40
+Median: 6.467117185580076
+90th percentile: 2516.65543136073
+95th percentile: 5274.376099474273
+99th percentile: 17099.499126613042
+99th percentile: 17099.499126613042
+Max: 27877.33162802389
+Mean: 935.1245581502302
+MSE: 77622377915.31497
+MAPE: 267.2331721026047
+Pearson Correlation: (0.7915966146452165, 0.0)
+
+model_path: save/imdb/single/model_title_0.0001_32_128_0.5_20
+Median: 6.0
+90th percentile: 3106.893991623253
+95th percentile: 7100.440640674274
+99th percentile: 21270.50535811672
+99th percentile: 21270.50535811672
+Max: 43954.0
+Mean: 1224.8630983638097
+MSE: 74314858345.5875
+MAPE: 270.82813901904206
+Pearson Correlation: (0.7948613022117318, 0.0)
+
+model_path: save/imdb/single/model_title_0.001_32_128_0.5_20
+Median: 6.0
+90th percentile: 3222.538575229365
+95th percentile: 7165.90000000001
+99th percentile: 21934.699154607275
+99th percentile: 21934.699154607275
+Max: 43954.0
+Mean: 1253.6813654166533
+MSE: 75022864915.78745
+MAPE: 271.8017498538173
+Pearson Correlation: (0.7942606449589377, 0.0)
+
+model_path: save/imdb/single/model_title_0.001_32_128_0.25_20
+Median: 6.436006690949429
+90th percentile: 3467.1271811046013
+95th percentile: 7498.095254519943
+99th percentile: 23669.680876103037
+99th percentile: 23669.680876103037
+Max: 48885.34094402872
+Mean: 1332.9203978243715
+MSE: 79817123662.62491
+MAPE: 278.2388563173039
+Pearson Correlation: (0.7877944862016886, 0.0)
+
+model_path: save/imdb/single/model_title_0.001_32_128_0.25_20_unnormalize
+Median: 17801.0
+90th percentile: 706871.0000000002
+95th percentile: 1000750.4000000007
+99th percentile: 1383306.8599999992
+99th percentile: 1383306.8599999992
+Max: 1690997.0
+Mean: 198593.98753651412
+MSE: 149718481288.1042
+MAPE: 95.62242320952772
+Pearson Correlation: (nan, nan)
+
+model_path: save/imdb/single/model_title_0.0001_8_500_0.5_20_unnormalize
+Median: 5.060698063001871
+90th percentile: 45.016634746996466
+95th percentile: 95.43662089332624
+99th percentile: 268.583522268835
+99th percentile: 268.583522268835
+Max: 1190.2035827521515
+Mean: 21.833998779167416
+MSE: 44212745322.794556
+MAPE: 76.86514389764899
+Pearson Correlation: (0.9304431693180344, 0.0)
+
+model_path: save/imdb/single/model_title_0.0001_8_500_0.5_20_unnormalize
+Median: 17801.0
+90th percentile: 706871.0000000002
+95th percentile: 1000750.4000000007
+99th percentile: 1383306.8599999992
+99th percentile: 1383306.8599999992
+Max: 1690997.0
+Mean: 198593.98753651412
+MSE: 149718481288.1042
+MAPE: 95.62242320952772
+Pearson Correlation: (nan, nan)
+
+model_path: save/imdb/single/model_title_0.001_8_500_0.5_20
+Median: 6.83415550427411
+90th percentile: 3567.9528929010903
+95th percentile: 7598.362643324099
+99th percentile: 24429.6404858907
+99th percentile: 24429.6404858907
+Max: 52684.82751982904
+Mean: 1357.7488517254617
+MSE: 82081329315.16063
+MAPE: 274.29695283389333
+Pearson Correlation: (0.788100808649013, 0.0)
+
+model_path: save/imdb/single/model_title_0.001_8_1000_0.5_50_normalized
+Median: 17801.0
+90th percentile: 706871.0000000002
+95th percentile: 1000750.4000000007
+99th percentile: 1383306.8599999992
+99th percentile: 1383306.8599999992
+Max: 1690997.0
+Mean: 198593.98753651412
+MSE: 149718481288.1042
+MAPE: 95.62242320952772
+Pearson Correlation: (nan, nan)
+
+model_path: save/imdb/single/model_title_0.001_8_1000_0.5_50_normalized
+Median: 17801.0
+90th percentile: 706871.0000000002
+95th percentile: 1000750.4000000007
+99th percentile: 1383306.8599999992
+99th percentile: 1383306.8599999992
+Max: 1690997.0
+Mean: 198593.98753651412
+MSE: 149718481288.1042
+MAPE: 95.62242320952772
+Pearson Correlation: (nan, nan)
+
+model_path: save/imdb/single/model_title_0.001_8_1000_0.5_50_normalized
+Median: 609919.0
+90th percentile: 609919.0
+95th percentile: 609919.0
+99th percentile: 609919.0
+99th percentile: 609919.0
+Max: 609919.0
+Mean: 609919.0
+MSE: 149718481288.1042
+MAPE: 95.62242320952772
+model_path: save/imdb/single/model_title_0.001_8_1000_0.5_50_normalized
+Median: 609919.0
+90th percentile: 609919.0
+95th percentile: 609919.0
+99th percentile: 609919.0
+99th percentile: 609919.0
+Max: 609919.0
+Mean: 609919.0
+MSE: 149718481288.1042
+MAPE: 95.62242320952772
+model_path: save/imdb/single/model_title_0.001_8_250_0.5_50
+Median: 2.287791468811755
+90th percentile: 2.287791468811755
+95th percentile: 2.287791468811755
+99th percentile: 2.287791468811755
+99th percentile: 2.287791468811755
+Max: 2.287791468811755
+Mean: 2.287791468811755
+MSE: 114903755398.27159
+MAPE: 1166975.445524425
+model_path: save/imdb/single/model_title_0.001_8_250_0.5_50
+Median: 2.292160362815719
+90th percentile: 2.292160362815719
+95th percentile: 2.292160362815719
+99th percentile: 2.292160362815719
+99th percentile: 2.292160362815719
+Max: 2.292160362815719
+Mean: 2.292160362815719
+MSE: 114834903391.96513
+MAPE: 1164751.0736584675
+model_path: save/imdb/single/model_title_0.001_8_250_0.5_50
+Median: 2.2932219386995008
+90th percentile: 2.2932219386995008
+95th percentile: 2.2932219386995008
+99th percentile: 2.2932219386995008
+99th percentile: 2.2932219386995008
+Max: 2.2932219386995008
+Mean: 2.2932219386995008
+MSE: 114818290766.10599
+MAPE: 1164211.8644920243
+model_path: save/imdb/single/model_title_0.001_8_250_0.5_50
+Median: 4.603259641677704
+90th percentile: 41.34388820028121
+95th percentile: 80.48386063727261
+99th percentile: 261.8341145079028
+99th percentile: 261.8341145079028
+Max: 1227.13176769857
+Mean: 20.23787208526105
+MSE: 36955196695.42098
+MAPE: 75.95635449198271
+Pearson Correlation: (0.9375014106811888, 0.0)
+
+model_path: save/imdb/single/model_title_0.001_8_250_0.5_50
+Median: 4.6002296551952915
+90th percentile: 41.46497902584959
+95th percentile: 80.10853859892926
+99th percentile: 263.4831241076379
+99th percentile: 263.4831241076379
+Max: 1229.9255496084143
+Mean: 20.23389565161609
+MSE: 36936107817.702675
+MAPE: 75.94711074977968
+Pearson Correlation: (0.9375315667779457, 0.0)
+
+model_path: save/imdb/single/model_title_0.001_8_125_0.125_50
+Median: 794.1986504658711
+90th percentile: 13463.000000000018
+95th percentile: 31894.630011995603
+99th percentile: 75414.66398004099
+99th percentile: 75414.66398004099
+Max: 117533.88317132743
+Mean: 5462.20345879214
+MSE: 149405772309.90848
+MAPE: 95.46564898858244
+Pearson Correlation: (0.34179832825905543, 1.0964001655307414e-140)
+
+model_path: save/imdb/single/model_title_0.0005_8_125_0.125_50
+Median: 5.051724298294219
+90th percentile: 45.9605098521332
+95th percentile: 93.99284980062006
+99th percentile: 277.22502212082
+99th percentile: 277.22502212082
+Max: 1383.2218349348277
+Mean: 22.412787171641128
+MSE: 42274790604.173706
+MAPE: 76.72473813727152
+Pearson Correlation: (0.930393909039297, 0.0)
+
+model_path: save/imdb/single/model_title_0.0001_8_125_0.125_50
+Median: 5.0
+90th percentile: 44.04476154832969
+95th percentile: 91.68067130436255
+99th percentile: 248.06095167705988
+99th percentile: 248.06095167705988
+Max: 1091.0
+Mean: 20.391490949506096
+MSE: 44565292457.80181
+MAPE: 76.65806251003981
+Pearson Correlation: (0.9312853258838731, 0.0)
+
+model_path: save/imdb/single/model_title_0.001_8_125_0.25_50
+Median: 313.00711922414405
+90th percentile: 4048.5085044971497
+95th percentile: 7674.094628601832
+99th percentile: 21921.429543219725
+99th percentile: 21921.429543219725
+Max: 83256.0
+Mean: 1673.738249830581
+MSE: 148798543044.58994
+MAPE: 95.08144834369455
+Pearson Correlation: (0.26986068758385573, 2.1642697361137664e-86)
+
+model_path: save/imdb/single/model_title_0.0005_8_125_0.25_50
+Median: 66.0
+90th percentile: 327.86903268773136
+95th percentile: 667.9901671602113
+99th percentile: 1600.9085114878094
+99th percentile: 1600.9085114878094
+Max: 2567.0
+Mean: 150.40179023585628
+MSE: 143552591863.70575
+MAPE: 92.75214777476913
+Pearson Correlation: (0.6139703279203937, 0.0)
+
+model_path: save/imdb/single/model_title_0.0001_8_125_0.25_50
+Median: 5.0
+90th percentile: 44.570361257506455
+95th percentile: 91.13378987903586
+99th percentile: 258.8727513304386
+99th percentile: 258.8727513304386
+Max: 1091.0
+Mean: 20.931715007283245
+MSE: 43909762058.69008
+MAPE: 76.73604763369369
+Pearson Correlation: (0.9330751030185914, 0.0)
+
+model_path: save/imdb/single/model_title_0.001_8_125_0.5_50
+Median: 869.9102332017245
+90th percentile: 74841.2353363017
+95th percentile: 204399.30000000002
+99th percentile: 528783.5599999996
+99th percentile: 528783.5599999996
+Max: 854453.0
+Mean: 30606.51854898044
+MSE: 149339657571.21964
+MAPE: 95.4294525349408
+Pearson Correlation: (0.09981421220301184, 7.568864275001354e-13)
+
+model_path: save/imdb/single/model_title_0.0005_8_125_0.5_50
+Median: 5.078476028923036
+90th percentile: 48.03351159812065
+95th percentile: 96.01378023854485
+99th percentile: 365.8695000960829
+99th percentile: 365.8695000960829
+Max: 1882.707101461583
+Mean: 25.786806965781135
+MSE: 40803630882.80599
+MAPE: 76.91630927393851
+Pearson Correlation: (0.9355164860511109, 0.0)
+
+model_path: save/imdb/single/model_title_0.0001_8_125_0.5_50
+Median: 5.0
+90th percentile: 43.99371671189401
+95th percentile: 90.10557070901629
+99th percentile: 263.7877476073935
+99th percentile: 263.7877476073935
+Max: 1091.0
+Mean: 20.99267106171658
+MSE: 43795467342.261665
+MAPE: 76.76993735121941
+Pearson Correlation: (0.9350521230646783, 0.0)
+
+model_path: save/imdb/single/model_title_0.001_8_125_0.75_50
+Median: 4.751386826429253
+90th percentile: 41.86927838483137
+95th percentile: 86.86256218359551
+99th percentile: 249.14114788979902
+99th percentile: 249.14114788979902
+Max: 1102.8500102606495
+Mean: 20.263160562936875
+MSE: 38931493750.35169
+MAPE: 76.04467338164734
+Pearson Correlation: (0.9319688440952745, 0.0)
+
+model_path: save/imdb/single/model_title_0.0005_8_125_0.75_50
+Median: 5.116818282062784
+90th percentile: 47.42992182971726
+95th percentile: 96.13250929967113
+99th percentile: 366.13144003233447
+99th percentile: 366.13144003233447
+Max: 1768.0
+Mean: 24.47688913601967
+MSE: 41095211017.40585
+MAPE: 76.92101430523567
+Pearson Correlation: (0.9335857244868665, 0.0)
+
+model_path: save/imdb/single/model_title_0.0001_8_125_0.75_50
+Median: 5.0
+90th percentile: 44.90526422004941
+95th percentile: 88.11300767311052
+99th percentile: 282.16495185860583
+99th percentile: 282.16495185860583
+Max: 1247.0971146927866
+Mean: 21.613110117554807
+MSE: 42838260213.95807
+MAPE: 76.79124679090441
+Pearson Correlation: (0.9382967092499039, 0.0)
+
+model_path: save/imdb/single/model_title_0.001_8_250_0.125_50
+Median: 319.8985775721704
+90th percentile: 3695.6448482742453
+95th percentile: 7235.874569742219
+99th percentile: 16355.920392252912
+99th percentile: 16355.920392252912
+Max: 48551.728800353805
+Mean: 1448.741751274514
+MSE: 148886480418.5042
+MAPE: 95.15231620768311
+Pearson Correlation: (0.3765895603695299, 9.992719860075868e-173)
+
+model_path: save/imdb/single/model_title_0.0005_8_250_0.125_50
+Median: 5.206400172962264
+90th percentile: 51.17601694904585
+95th percentile: 100.23756262379256
+99th percentile: 471.275410976055
+99th percentile: 471.275410976055
+Max: 2662.451164615244
+Mean: 33.61820381794687
+MSE: 38516983649.52705
+MAPE: 77.01139127128855
+Pearson Correlation: (0.9383564266376943, 0.0)
+
+model_path: save/imdb/single/model_title_0.0001_8_250_0.125_50
+Median: 5.165188659366749
+90th percentile: 45.88613912312057
+95th percentile: 96.05776748460393
+99th percentile: 273.89537226690766
+99th percentile: 273.89537226690766
+Max: 1309.6398996461887
+Mean: 22.436130352850046
+MSE: 43637181164.54966
+MAPE: 77.03371503360965
+Pearson Correlation: (0.9309004232054044, 0.0)
+
+model_path: save/imdb/single/model_title_0.001_8_250_0.25_50
+Median: 5.412863576479055
+90th percentile: 56.38298178335082
+95th percentile: 108.18347431219061
+99th percentile: 727.1087138970073
+99th percentile: 727.1087138970073
+Max: 4726.9178769547025
+Mean: 43.577873013523586
+MSE: 37775718119.82053
+MAPE: 77.02773621552177
+Pearson Correlation: (0.9379163244183509, 0.0)
+

@@ -173,7 +173,7 @@ def prepare_single_table(schema_graph, table, path, max_distinct_vals=100000, cs
                 contains_nan = table_data[attribute].isna().any()
 
                 # not the best solution but works
-                unique_null_val = table_data[attribute].mean() + 0.0001
+                unique_null_val = table_data[attribute].max() + 1
                 assert not (table_data[attribute] == unique_null_val).any()
 
                 table_data[attribute] = table_data[attribute].fillna(unique_null_val)
@@ -244,6 +244,8 @@ def get_col_statistics(table_data, table_meta_data, min_max_file):
     distinct_nums = []
     mins = []
     maxs = []
+    mus = []
+    stds = []
     for attribute in table_meta_data['relevant_attributes_full']:
         col = attribute.split('.')[1]
         name = alias2table[attribute.split('.')[0]] + f".{col}"
@@ -254,8 +256,10 @@ def get_col_statistics(table_data, table_meta_data, min_max_file):
         mins.append(col_materialize.min())
         cards.append(len(col_materialize))
         distinct_nums.append(len(col_materialize.unique()))
+        mus.append(col_materialize.mean())
+        stds.append(col_materialize.std())
     statistics = pd.DataFrame(
-        data={'name': names, 'min': mins, 'max': maxs, 'cardinality': cards, 'num_unique_values': distinct_nums})
+        data={'name': names, 'min': mins, 'max': maxs, 'cardinality': cards, 'num_unique_values': distinct_nums, 'mu':mus, 'std':stds})
     if os.path.exists(min_max_file):
         statistics.to_csv(min_max_file, index=False, mode='a', header=None)
     else:
@@ -266,7 +270,7 @@ def get_normalized_value(table_data):
         n, dim = table_data.shape
         mu = table_data.mean(axis=0)
         s = table_data.std(axis=0)
-        for i in range(dim):
-            table_data[:,i] = (table_data[:,i] - mu[i])/s[i]
         
-        return table_data
+        table_data_copy = (table_data - mu) / s
+        
+        return table_data_copy

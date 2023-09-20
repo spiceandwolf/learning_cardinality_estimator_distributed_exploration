@@ -126,6 +126,6 @@ table_infos = {
 #     table_path = csv_path_to_be_handel.format(table_info[0])
 #     add_header(table_path, table_info[1])
 
-table_path = '/home/hdd/user1/oblab/CardinalityEstimationTestbed/Overall/train-test-data/forest_power-data-sql/household_power_consumption.txt'
-targat_table_path = '/home/hdd/user1/oblab/CardinalityEstimationTestbed/Overall/train-test-data/forest_power-data-sql/no_head/household_power_consumption.csv'
-convert_power_2_yyyy_mm_dd(table_path, targat_table_path, ';')
+# table_path = '/home/hdd/user1/oblab/CardinalityEstimationTestbed/Overall/train-test-data/forest_power-data-sql/household_power_consumption.txt'
+# targat_table_path = '/home/hdd/user1/oblab/CardinalityEstimationTestbed/Overall/train-test-data/forest_power-data-sql/no_head/household_power_consumption.csv'
+# convert_power_2_yyyy_mm_dd(table_path, targat_table_path, ';')

@@ -303,40 +303,47 @@ def print_qerror(preds_unnorm, labels_unnorm):
         np.percentile(qerror, 99)) + '\n' + "Max: {}".format(np.max(qerror)) + '\n' + \
                   "Mean: {}".format(np.mean(qerror)) + '\n')
 
-    print("Median: {}".format(np.median(qerror)))
-    print("90th percentile: {}".format(np.percentile(qerror, 90)))
-    print("95th percentile: {}".format(np.percentile(qerror, 95)))
-    print("99th percentile: {}".format(np.percentile(qerror, 99)))
-    print("Max: {}".format(np.max(qerror)))
-    print("Mean: {}".format(np.mean(qerror)))
+    logger.info(f"Median: {np.median(qerror)}")
+    logger.info(f"90th percentile: {np.percentile(qerror, 90)}")
+    logger.info(f"95th percentile: {np.percentile(qerror, 95)}")
+    logger.info(f"99th percentile: {np.percentile(qerror, 99)}")
+    logger.info(f"Max: {np.max(qerror)}")
+    logger.info(f"Mean: {np.mean(qerror)}")
 
 def print_mse(preds_unnorm, labels_unnorm):
     fmetric.write("MSE: {}".format(((preds_unnorm - labels_unnorm) ** 2).mean()) + '\n')
-    print("MSE: {}".format(((preds_unnorm - labels_unnorm) ** 2).mean()))
+    logger.info(f"MSE: {((preds_unnorm - labels_unnorm) ** 2).mean()}")
     
 def print_mape(preds_unnorm, labels_unnorm):
     fmetric.write("MAPE: {}".format(((np.abs(preds_unnorm - labels_unnorm) / labels_unnorm)).mean() * 100) + '\n')
-    print("MAPE: {}".format(((np.abs(preds_unnorm - labels_unnorm) / labels_unnorm)).mean() * 100))
+    logger.info(f"MAPE: {((np.abs(preds_unnorm - labels_unnorm) / labels_unnorm)).mean() * 100}")
 
 def print_pearson_correlation(x, y):
     PCCs = stats.pearsonr(x, y)
     fmetric.write("Pearson Correlation: {}".format(PCCs) + '\n\n')
-    print("Pearson Correlation: {}".format(PCCs))
+    logger.info(f"Pearson Correlation: {PCCs}")
     
 def print_training_time(train_start, train_end):
     fmetric.write("Training Time: {}s".format(train_end - train_start) + '\n')  # Write training time
     
-def make_points(attrs, predicates, column_min_max_vals, bias):
+def make_points(attrs, predicates, statistics, bias):
     left_bounds = {}
     right_bounds = {}
+    mus = {}
+    stds = {}
     for attr in attrs:
         if(len(attr.split('.')) == 2):
             # 只适用于imdb
             alias2table = {'cast_info': 'ci', 'movie_companies': 'mc', 'movie_info':'mi', 'movie_keyword': 'mk',
                    'movie_info_idx': 'mi_idx', 'title': 't'}
             col_name = alias2table[attr.split('.')[0]] + f".{attr.split('.')[1]}"
-        left_bounds[col_name] = column_min_max_vals[col_name][0]
-        right_bounds[col_name] = column_min_max_vals[col_name][1]
+        # normalize化
+        # left_bounds[col_name] = (statistics[col_name][0] - statistics[col_name][-2]) / statistics[col_name][-1]
+        # right_bounds[col_name] = (statistics[col_name][1] - statistics[col_name][-2]) / statistics[col_name][-1]
+        left_bounds[col_name] = statistics[col_name][0]
+        right_bounds[col_name] = statistics[col_name][1]
+        mus[col_name] = statistics[col_name][-2]
+        stds[col_name] = statistics[col_name][-1]
     
     for predicate in predicates:
         if len(predicate) == 3:
@@ -347,12 +354,21 @@ def make_points(attrs, predicates, column_min_max_vals, bias):
             val = float(predicate[2])
                 
             if operator == '=':
+                # normalize化
+                # left_bounds[column] = (val - bias - mus[col_name]) / stds[col_name]
+                # right_bounds[column] = (val + bias - mus[col_name]) / stds[col_name]
                 left_bounds[column] = val - bias
                 right_bounds[column] = val + bias
+                
             elif operator == '<':
+                # normalize化
+                # right_bounds[column] = (val - mus[col_name]) / stds[col_name]
                 right_bounds[column] = val
             elif operator  == ">":
+                # normalize化
+                # left_bounds[column] = (val - mus[col_name]) / stds[col_name]
                 left_bounds[column] = val
+                
     return list(left_bounds.values()), list(right_bounds.values())
 
 def get_column_min_max_vals(file_name_column_min_max_vals):
@@ -368,15 +384,28 @@ def get_column_min_max_vals(file_name_column_min_max_vals):
             
     return column_min_max_vals
 
+def load_statistics(statistics_file):
+    # Get statistics for each column
+    with open(statistics_file, 'rU') as f:
+        data_raw = list(list(rec) for rec in csv.reader(f, delimiter=','))
+        statistics = {}
+        for i, row in enumerate(data_raw):
+            if i == 0:
+                continue
+            statistics[row[0]] = list(map(float, row[1:]))
+    return statistics        
+
 def parse_conditions(conditions, left_bounds, right_bounds, bins):
     print('conditions:\n', conditions)
+    rng = np.random.RandomState(1234)
+    noise = rng.rand(1)
     for condition in conditions:
         if '=' in condition:
             attr, literal = condition.split('=', 1)
             literal = float(literal.strip())
             if literal >= left_bounds[attr] and literal <= right_bounds[attr]:
-                left_bounds[attr] = literal - bins[attr]
-                right_bounds[attr] = literal + bins[attr]
+                left_bounds[attr] = literal - bins[attr] * noise
+                right_bounds[attr] = literal + bins[attr] * noise
             else:
                 left_bounds[attr] = literal
                 right_bounds[attr] = literal
@@ -384,7 +413,7 @@ def parse_conditions(conditions, left_bounds, right_bounds, bins):
         elif '<=' in condition:
             attr, literal = condition.split('<=', 1)
             literal = float(literal.strip())
-            right_bounds[attr] = literal + bins[attr]
+            right_bounds[attr] = literal + bins[attr] * noise
         
         elif '<' in condition:
             attr, literal = condition.split('<', 1)
@@ -393,10 +422,10 @@ def parse_conditions(conditions, left_bounds, right_bounds, bins):
         elif '>=' in condition:
             attr, literal = condition.split('>=', 1)
             literal = float(literal.strip())
-            left_bounds[attr] = literal - bins[attr]
+            left_bounds[attr] = literal - bins[attr] * noise
             
         elif '>' in condition:
-            attr, literal = condition.split('>=', 1)
+            attr, literal = condition.split('>', 1)
             literal = float(literal.strip())
             left_bounds[attr] = literal
         

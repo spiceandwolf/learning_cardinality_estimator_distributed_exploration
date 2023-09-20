@@ -52,9 +52,9 @@ class Base_estimators:
         return self.model.sqr_gaussian_prob(np.array(left_bounds, dtype=np.float32), np.array(right_bounds, dtype=np.float32))
     
     def get_model_size(self):
-        n_params = self.model.get_num_parameters(self.model)
-        print('There are {} trainable parameters in this model.'.format(n_params))
-        print('Parameters total size is {} MB'.format(n_params * 4 / 1024 / 1024))
+        n_params = self.model.get_num_parameters()
+        logger.info(f'There are {n_params} trainable parameters in this model.')
+        logger.info(f'Parameters total size is {n_params * 4 / 1024 / 1024} MB')
         
 
 def read_table_csv(table_obj, csv_seperator=','):
