@@ -25,3 +25,4 @@ with tqdm(total=count) as pbar:
                                 --learning_rate {learning_rate} ')
                     pbar.update(1)
 
+# python t-vae_test.py --dataset power --train --table_csv_path ../../data/power/ --statistics_file ./data/power_statistics.csv --bias {'power.Global_active_power': 0.0005, 'power.Global_reactive_power': 0.0005, 'power.Voltage': 0.005, 'power.Global_intensity': 0.05, 'power.Sub_metering_1': 0.5, 'power.Sub_metering_2': 0.5, 'power.Sub_metering_3': 0.5} --n_latent 8 --n_h 250 --tau 0.5 --n_epoch 20 --learning_rate 1e-3

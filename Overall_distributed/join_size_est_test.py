@@ -42,6 +42,8 @@ if __name__ == '__main__':
     id = 0
 
     bins = {'t.id':1, 't.production_year':1, 't.phonetic_code':1, 't.series_years':1, 'ci.id':1, 'ci.movie_id':1, 'ci.role_id':1}
+    alias2table = {'cast_info': 'ci', 'movie_companies': 'mc', 'movie_info':'mi', 'movie_keyword': 'mk',
+                   'movie_info_idx': 'mi_idx', 'title': 't'}
 
     if os.path.exists(file_name_column_min_max_vals):
         os.remove(file_name_column_min_max_vals)

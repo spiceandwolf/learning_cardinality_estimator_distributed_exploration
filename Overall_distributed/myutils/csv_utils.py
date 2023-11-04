@@ -4,11 +4,11 @@ import numpy as np
 import pandas as pd
 from datetime import datetime
 
-def read_table_csv(table, csv_seperator=','):
+def read_table_csv(table, csv_seperator=',', header=None):
     """
     从csv文件中读取数据还原table
     """
-    df_rows = pd.read_csv(table.csv_file_location, header=None, escapechar='\\', 
+    df_rows = pd.read_csv(table.csv_file_location, header=header, escapechar='\\', 
                           encoding='utf-8', quotechar='"', sep=csv_seperator, low_memory= False)
     df_rows.columns = [table.table_name + '.' + attr for attr in table.attributes]
     

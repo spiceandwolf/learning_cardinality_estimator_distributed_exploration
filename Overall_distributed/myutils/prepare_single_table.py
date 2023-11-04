@@ -9,7 +9,7 @@ from myutils.csv_utils import read_table_csv
 
 logger = logging.getLogger(__name__)
 
-def prepare_single_table(schema_graph, table, path, max_distinct_vals=100000, csv_seperator=',',
+def prepare_single_table(schema_graph, table, path, max_distinct_vals=100000, csv_seperator=',', header=None,
                          max_table_data=20000000):
     """
     Reads table csv. Adds multiplier fields, missing value imputation, dict for categorical data. Adds null tuple tables.
@@ -27,7 +27,7 @@ def prepare_single_table(schema_graph, table, path, max_distinct_vals=100000, cs
     
     table_meta_data = dict()
     table_obj = schema_graph.table_dictionary[table]
-    table_data = read_table_csv(table_obj, csv_seperator=csv_seperator)
+    table_data = read_table_csv(table_obj, csv_seperator=csv_seperator, header=header)
     table_sample_rate = table_obj.sample_rate
 
     relevant_attributes = [x for x in table_obj.attributes if x not in table_obj.irrelevant_attributes] # 删掉了不相关的列（重要）
@@ -234,11 +234,12 @@ def prepare_single_table(schema_graph, table, path, max_distinct_vals=100000, cs
             null_tuples.to_hdf(null_tuple_path, key='df', format='table')
     '''
     
+    table_meta_data['input_size'] = table_data.shape[1]
+    
     return table_data, table_meta_data
 
-def get_col_statistics(table_data, table_meta_data, min_max_file):
-    alias2table = {'cast_info': 'ci', 'movie_companies': 'mc', 'movie_info':'mi', 'movie_keyword': 'mk',
-                   'movie_info_idx': 'mi_idx', 'title': 't'}
+def get_col_statistics(table_data, table_meta_data, statistics_file, alias2table=None):
+
     names = []
     cards = []
     distinct_nums = []
@@ -248,7 +249,10 @@ def get_col_statistics(table_data, table_meta_data, min_max_file):
     stds = []
     for attribute in table_meta_data['relevant_attributes_full']:
         col = attribute.split('.')[1]
-        name = alias2table[attribute.split('.')[0]] + f".{col}"
+        if alias2table is not None:
+            name = + f"{alias2table[attribute.split('.')[0]]}.{col}"
+        else:
+            name = attribute
         names.append(name)
        
         col_materialize = table_data[attribute]
@@ -260,10 +264,10 @@ def get_col_statistics(table_data, table_meta_data, min_max_file):
         stds.append(col_materialize.std())
     statistics = pd.DataFrame(
         data={'name': names, 'min': mins, 'max': maxs, 'cardinality': cards, 'num_unique_values': distinct_nums, 'mu':mus, 'std':stds})
-    if os.path.exists(min_max_file):
-        statistics.to_csv(min_max_file, index=False, mode='a', header=None)
+    if os.path.exists(statistics_file):
+        statistics.to_csv(statistics_file, index=False, mode='a', header=None)
     else:
-        statistics.to_csv(min_max_file, index=False)
+        statistics.to_csv(statistics_file, index=False)
     return statistics.to_dict('list')
 
 def get_normalized_value(table_data):

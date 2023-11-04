@@ -297,3 +297,14 @@ def gen_imdb_cols4_schema(csv_path):
     schema.add_relationship('cast_info', 'movie_id', 'title', 'id')
 
     return schema
+
+def gen_power_schema(csv_path):
+    schema = SchemaGraph()
+
+    # tables
+    schema.add_table(Table('power', attributes=['Date','Time','Global_active_power','Global_reactive_power','Voltage','Global_intensity','Sub_metering_1','Sub_metering_2','Sub_metering_3'],
+                           irrelevant_attributes=['Date', 'Time'],
+                           csv_file_location=csv_path.format('power'), 
+                           table_size=20000000))
+
+    return schema

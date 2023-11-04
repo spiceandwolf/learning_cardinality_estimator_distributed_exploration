@@ -326,17 +326,17 @@ def print_pearson_correlation(x, y):
 def print_training_time(train_start, train_end):
     fmetric.write("Training Time: {}s".format(train_end - train_start) + '\n')  # Write training time
     
-def make_points(attrs, predicates, statistics, bias):
+def make_points(attrs, predicates, statistics, bias, alias2table=None):
     left_bounds = {}
     right_bounds = {}
     mus = {}
     stds = {}
     for attr in attrs:
         if(len(attr.split('.')) == 2):
-            # 只适用于imdb
-            alias2table = {'cast_info': 'ci', 'movie_companies': 'mc', 'movie_info':'mi', 'movie_keyword': 'mk',
-                   'movie_info_idx': 'mi_idx', 'title': 't'}
-            col_name = alias2table[attr.split('.')[0]] + f".{attr.split('.')[1]}"
+            if alias2table is None:
+                col_name = alias2table[attr.split('.')[0]] + f".{attr.split('.')[1]}"
+            else:
+                col_name = attr
         # normalize化
         # left_bounds[col_name] = (statistics[col_name][0] - statistics[col_name][-2]) / statistics[col_name][-1]
         # right_bounds[col_name] = (statistics[col_name][1] - statistics[col_name][-2]) / statistics[col_name][-1]
@@ -357,8 +357,8 @@ def make_points(attrs, predicates, statistics, bias):
                 # normalize化
                 # left_bounds[column] = (val - bias - mus[col_name]) / stds[col_name]
                 # right_bounds[column] = (val + bias - mus[col_name]) / stds[col_name]
-                left_bounds[column] = val - bias
-                right_bounds[column] = val + bias
+                left_bounds[column] = val - bias[column]
+                right_bounds[column] = val + bias[column]
                 
             elif operator == '<':
                 # normalize化

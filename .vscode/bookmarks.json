@@ -119,6 +119,16 @@
 					"label": ""
 				}
 			]
+		},
+		{
+			"path": "../FACE-A-Normalizing-Flow-based-Cardinality-Estimator/utils/dataUtils.py",
+			"bookmarks": [
+				{
+					"line": 200,
+					"column": 15,
+					"label": ""
+				}
+			]
 		}
 	]
 }
