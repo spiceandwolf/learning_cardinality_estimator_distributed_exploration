@@ -1,11 +1,13 @@
 import argparse
 import gc
+import json
 import logging
 import os
 import pickle
 import time
 import numpy as np
 import pandas as pd
+from sklearn.preprocessing import MinMaxScaler
 import torch
 from myutils.prepare_single_table import get_col_statistics, prepare_single_table
 from myutils.csv_utils import read_table_csv
@@ -14,9 +16,8 @@ import myutils.my_utils as my_utils
 from t_vae_master.models import GaussianVAE
 
 seed = 1234
-# bias = 0.1
 
-def train(schema, dataset, statistics_file, learning_rate, n_latent, n_h, tau, n_epoch):
+def train(schema, dataset, learning_rate, n_latent, n_h, tau, n_epoch):
     models = dict()
     meta_datas = dict()
     for table in schema.tables:
@@ -26,8 +27,8 @@ def train(schema, dataset, statistics_file, learning_rate, n_latent, n_h, tau, n
         logger.info(f"n_latent: {n_latent} / n_h: {n_h} / tau: {tau}")
         t = time.time()
         
-        save_dir = f"save/{dataset}/{decoder}/"
-        model_path = f"{save_dir}/model_{table.table_name}_{learning_rate}_{n_latent}_{n_h}_{tau}_{n_epoch}"
+        save_dir = f"save/{dataset}/{decoder}"
+        model_path = f"{save_dir}/model_{table.table_name}_{n_latent}_{n_h}_{tau}_{learning_rate}_{n_epoch}"
         
         logger.info(f'model : {model_path}')
             
@@ -35,7 +36,9 @@ def train(schema, dataset, statistics_file, learning_rate, n_latent, n_h, tau, n
         
         hdf_path = './data/' + table.table_name
         df_rows, df_rows_meta = prepare_single_table(schema, table.table_name, hdf_path, header=0, csv_seperator=';')
-        get_col_statistics(df_rows, df_rows_meta, statistics_file)
+        
+        scaler = MinMaxScaler()
+        df_rows = scaler.fit_transform(df_rows)
         
         print(df_rows.shape)
         df_rows.sample(frac=1, random_state=seed)
@@ -45,7 +48,7 @@ def train(schema, dataset, statistics_file, learning_rate, n_latent, n_h, tau, n
         
         model = GaussianVAE(n_in=X_train.shape[1], n_latent=n_latent, n_h=n_h, tau=tau)
            
-        model.fit(X_train, k=1, batch_size=100,
+        model.fit(X_train, k=1, batch_size=1000,
             learning_rate=learning_rate, n_epoch=n_epoch,
             warm_up=False, is_stoppable=True,
             X_valid=X_valid, path=model_path)
@@ -100,13 +103,15 @@ if __name__ == '__main__':
     # action
     parser.add_argument('--train', help="Trains the model", action='store_true')
     parser.add_argument('--evaluate', help="Evaluates the model's qerror", action='store_true')
+    parser.add_argument('--count_data_info', help="count raw data information", action='store_true')
     # file path
     parser.add_argument('--table_csv_path', default='../../data/power/')
     parser.add_argument('--test_file', default='../workload/power/powertest.sql.csv')
     parser.add_argument('--statistics_file', default='./data/power_statistics.csv')
+    parser.add_argument('--model_path', default='./save/power/normal/')
+    parser.add_argument('--log_path', default='./logs')
     # settings
-    parser.add_argument('--bias', default={'power.Global_active_power': 0.0005, 'power.Global_reactive_power': 0.0005, 'power.Voltage': 0.005, 'power.Global_intensity': 0.05, 'power.Sub_metering_1': 0.5, 'power.Sub_metering_2': 0.5, 'power.Sub_metering_3': 0.5}
-                        , type=dict())
+    parser.add_argument('--bias', default=None)
     # hyperparameters
     parser.add_argument('--n_latent', default='8', type=int)
     parser.add_argument('--n_h', default='250', type=int)
@@ -120,8 +125,10 @@ if __name__ == '__main__':
     table_csv_path = args.table_csv_path + '/{}.csv'
     test_file = args.test_file
     statistics_file = args.statistics_file
+    model_path = args.model_path
+    log_path = args.log_path
     # settings
-    bias = args.bias
+    bias = json.loads(args.bias)
     # hyperparameters
     n_latent = args.n_latent
     n_h = args.n_h
@@ -129,23 +136,26 @@ if __name__ == '__main__':
     n_epoch = args.n_epoch
     learning_rate = args.learning_rate
     
-    os.makedirs('logs', exist_ok=True)
+    os.makedirs(log_path, exist_ok=True)
     logging.basicConfig(
         level=logging.INFO,
         # [%(threadName)-12.12s]
         format="%(asctime)s [%(levelname)-5.5s]  %(message)s",
         handlers=[
-            logging.FileHandler("logs/{}_{}.log".format('imdb', time.strftime("%Y%m%d-%H%M%S"))),
+            logging.FileHandler("{}/{}_{}.log".format(log_path, dataset, time.strftime("%Y%m%d-%H%M%S"))),
             logging.StreamHandler()
         ])
     logger = logging.getLogger(__name__)
 
-    if os.path.exists(statistics_file):
-        os.remove(statistics_file)
-
     schema = gen_power_schema(table_csv_path)
     
     models = dict()
+    
+    if args.count_data_info:
+        for table in schema.tables:
+            hdf_path = './data/' + table.table_name
+            df_rows, df_rows_meta = prepare_single_table(schema, table.table_name, hdf_path, header=0, csv_seperator=';')
+            get_col_statistics(df_rows, df_rows_meta, statistics_file)
 
     if args.train:
         models = train(schema, dataset, statistics_file, learning_rate=learning_rate, n_latent=n_latent, n_h=n_h, tau=tau, n_epoch=n_epoch)
@@ -155,14 +165,15 @@ if __name__ == '__main__':
     if args.evaluate:
         with open(f'./data/{dataset}/meta_data.pkl', 'rb') as f:
             meta_datas = pickle.load(f)
-        
+        # 现在只是单表的
         for table in schema.tables:
-            if models is not None:
+            if models:
                 model = models[table.table_name]
             else:
                 decoder = 'normal'
                 save_dir = f"save/{dataset}/{decoder}/"
-                model_path = f"{save_dir}/model_{table.table_name}_{learning_rate}_{n_latent}_{n_h}_{tau}_{n_epoch}"
+                if model_path is None:
+                    model_path = f"{save_dir}/model_{table.table_name}_{learning_rate}_{n_latent}_{n_h}_{tau}_{n_epoch}"
                 
                 assert os.path.exists(model_path), f"model not found : {model_path}"
                 

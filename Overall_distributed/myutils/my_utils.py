@@ -331,17 +331,20 @@ def make_points(attrs, predicates, statistics, bias, alias2table=None):
     right_bounds = {}
     mus = {}
     stds = {}
+    mins = {}
+    maxs = {}
     for attr in attrs:
         if(len(attr.split('.')) == 2):
-            if alias2table is None:
+            if alias2table is not None:
                 col_name = alias2table[attr.split('.')[0]] + f".{attr.split('.')[1]}"
             else:
                 col_name = attr
-        # normalize化
-        # left_bounds[col_name] = (statistics[col_name][0] - statistics[col_name][-2]) / statistics[col_name][-1]
-        # right_bounds[col_name] = (statistics[col_name][1] - statistics[col_name][-2]) / statistics[col_name][-1]
-        left_bounds[col_name] = statistics[col_name][0]
-        right_bounds[col_name] = statistics[col_name][1]
+        # left_bounds[col_name] = statistics[col_name][0]
+        # right_bounds[col_name] = statistics[col_name][1]
+        left_bounds[col_name] = 0
+        right_bounds[col_name] = 1
+        mins[col_name] = statistics[col_name][0]
+        maxs[col_name] = statistics[col_name][1]
         mus[col_name] = statistics[col_name][-2]
         stds[col_name] = statistics[col_name][-1]
     
@@ -355,19 +358,19 @@ def make_points(attrs, predicates, statistics, bias, alias2table=None):
                 
             if operator == '=':
                 # normalize化
-                # left_bounds[column] = (val - bias - mus[col_name]) / stds[col_name]
-                # right_bounds[column] = (val + bias - mus[col_name]) / stds[col_name]
-                left_bounds[column] = val - bias[column]
-                right_bounds[column] = val + bias[column]
+                left_bounds[column] = (val - bias[column] - mins[col_name]) / (maxs[col_name] - mins[col_name])
+                right_bounds[column] = (val + bias[column] - mins[col_name]) / (maxs[col_name] - mins[col_name])
+                # left_bounds[column] = val - bias[column]
+                # right_bounds[column] = val + bias[column]
                 
             elif operator == '<':
                 # normalize化
-                # right_bounds[column] = (val - mus[col_name]) / stds[col_name]
-                right_bounds[column] = val
+                right_bounds[column] = (val - mins[col_name]) / (maxs[col_name] - mins[col_name])
+                # right_bounds[column] = val
             elif operator  == ">":
                 # normalize化
-                # left_bounds[column] = (val - mus[col_name]) / stds[col_name]
-                left_bounds[column] = val
+                left_bounds[column] = (val - mins[col_name]) / (maxs[col_name] - mins[col_name])
+                # left_bounds[column] = val
                 
     return list(left_bounds.values()), list(right_bounds.values())
 

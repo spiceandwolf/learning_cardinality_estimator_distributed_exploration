@@ -124,6 +124,7 @@ class GaussianVAE:
         self.kl_divergences = []
         self.valid_losses = []
         self.min_valid_loss = float("inf")
+        torch.manual_seed(2023)
 
     def _loss_function(self, x, k=1, beta=1):
         RE, KL = self.network(x, k=k)
@@ -140,6 +141,7 @@ class GaussianVAE:
         N = X.shape[0]
         data_loader = make_data_loader(X, device=self.device, batch_size=batch_size)
         optimizer = torch.optim.Adam(self.network.parameters(), lr=learning_rate)
+        
 
         if is_stoppable:
             X_valid = from_numpy(X_valid, self.device)
